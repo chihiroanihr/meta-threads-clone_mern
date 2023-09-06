@@ -110,7 +110,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
     }
 
     // TODO: Update User Profile
-    console.log(values);
+    console.log("[LOG] ", values);
   };
 
   return (
