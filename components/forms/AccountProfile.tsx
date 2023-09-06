@@ -8,9 +8,9 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { isBase64Image } from "@/lib/utils";
 import { UserValidation } from "@/lib/validations/user";
 import { useUploadThing } from "@/lib/validations/uploadthing";
-import { isBase64Image } from "@/lib/utils";
 import { updateUser } from "@/lib/actions/user.actions";
 import { Button } from "@/components/ui/button";
 import {
