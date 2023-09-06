@@ -1,15 +1,17 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 import { ClerkProvider } from "@clerk/nextjs";
+import { twMerge } from "tailwind-merge";
 
 import "../globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Threads",
   description: "A Next.js 13 Meta Threads Application",
 };
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -19,7 +21,8 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={twMerge(inter.className, "bg-dark-1")}>
+          {children}
         </body>
       </html>
     </ClerkProvider>
