@@ -1,6 +1,8 @@
-"use server"; // Reduced client-side javascripts. Ensuring that these codes should be rendered only on the server.
-
-/* Reference: https://nextjs.org/docs/app/api-reference/functions/server-actions */
+/*
+Reduced client-side javascripts. Ensuring that these codes should be rendered only on the server. 
+Reference: https://nextjs.org/docs/app/api-reference/functions/server-actions
+*/
+"use server";
 
 import { revalidatePath } from "next/cache";
 
@@ -17,7 +19,7 @@ interface Params {
 }
 
 /**
- * API - Update "User" table in database.
+ * API - Update user info in the "User" table.
  * @param param0 - User object
  */
 export async function updateUser({
@@ -36,14 +38,15 @@ export async function updateUser({
       { id: userId },
       { username: username.toLowerCase(), name, bio, image, onboarded: true },
       { upsert: true } // "Insert" + "Update"
-
-      /* Upsert: Update an existing row if a value already exists in a table, 
-    and insert a new row if the valu edoes not already exist in the table.
-    */
+      /*
+      Upsert: Update an existing row if a value already exists in a table, 
+      and insert a new row if the valu edoes not already exist in the table.
+      */
     );
 
+    // Update cached data without waiting for a revalidation period to expire.
     if (path === "/profile/edit") {
-      revalidatePath(path); // Update cached data without waiting for a revalidation period to expire.
+      revalidatePath(path);
     }
   } catch (error: any) {
     throw new Error(`[LOG] Failed to create/update user: ${error.message}`);
