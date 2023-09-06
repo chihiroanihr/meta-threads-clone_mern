@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent } from "react";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { UserValidation } from "@/lib/validations/user";
 import { useUploadThing } from "@/lib/validations/uploadthing";
 import { isBase64Image } from "@/lib/utils";
+import { updateUser } from "@/lib/actions/user.actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -38,6 +40,8 @@ interface AccountProfileProps {
 function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
+  const router = useRouter();
+  const pathname = usePathname();
 
   /**
    * Define your form
@@ -91,7 +95,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
   };
 
   /**
-   * Form submit handler
+   * Form submit handler - Call DB to update user profile.
    * ✅ This will be type-safe and validated.
    * @param values -  An object with a structure that conforms to the type defined by "UserValidation".
    */
@@ -109,8 +113,21 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
       }
     }
 
-    // TODO: Update User Profile
-    console.log("[LOG] ", values);
+    // Call DB to update user profile
+    await updateUser({
+      userId: user.id,
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      path: pathname,
+    });
+
+    if (pathname === "/profile/edit") {
+      router.back(); // go back to the previous page.
+    } else {
+      router.push("/"); // coming from onboarding -> go back to home.
+    }
   };
 
   return (
