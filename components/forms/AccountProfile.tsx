@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -174,6 +173,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
                   className="account-form_image-input"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -194,6 +194,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
                   className="account-form_input no-focus"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -214,6 +215,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
                   className="account-form_input no-focus"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -230,6 +232,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
               <FormControl>
                 <Textarea rows={10} className="account-form_input no-focus" />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
