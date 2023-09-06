@@ -20,6 +20,7 @@
     "unused-imports/no-unused-imports": "error"
   },
   "settings": {
+    // For tailwindcss auto-formatting
     "tailwindcss": {
       "groupByResponsive": true,
       "whitelist": []
