@@ -30,10 +30,11 @@ export async function updateUser({
   image,
   path,
 }: Params): Promise<void> {
-  // Connect to DB first
-  connectToDB();
-
   try {
+    // Connect to DB first
+    connectToDB();
+
+    // Upsert a User object
     await User.findOneAndUpdate(
       { id: userId },
       { username: username.toLowerCase(), name, bio, image, onboarded: true },
