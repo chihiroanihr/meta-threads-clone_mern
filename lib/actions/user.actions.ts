@@ -32,7 +32,7 @@ export async function updateUser({
   path,
 }: Params): Promise<void> {
   try {
-    // Connect to DB first
+    // Connect to the DB
     connectToDB();
 
     // Upsert a User object
@@ -64,7 +64,7 @@ export async function updateUser({
  */
 export async function fetchUser(userId: string) {
   try {
-    // Connect to DB first
+    // Connect to the DB
     connectToDB();
 
     // Find a User info based on user's id
@@ -85,7 +85,7 @@ export async function fetchUser(userId: string) {
  */
 export async function fetchUserThreads(userId: string) {
   try {
-    // Connect to DB first
+    // Connect to the DB
     connectToDB();
 
     // Find all threads authored by the user with the given userId

@@ -40,7 +40,7 @@ export async function createThread({
   path,
 }: CreateThreadParams) {
   try {
-    // Connect to DB first
+    // Connect to the DB
     connectToDB();
 
     // Create/Insert a Thread object
@@ -110,13 +110,13 @@ export async function fetchThreads({
 }
 
 /**
- * API - Get/Fetch a thred post from the "Thread" table via (thread) object ID.
+ * API - Get/Fetch a thread from the "Thread" table via (thread) object ID.
  * @param id - Thread object ID
  * @returns
  */
 export async function fetchThreadById(id: string) {
   try {
-    // Connect to DB first
+    // Connect to the DB
     connectToDB();
 
     const thread = await Thread.findById(id)
@@ -172,7 +172,7 @@ export async function addCommentToThread({
   path,
 }: AddCommentToThreadParams) {
   try {
-    // Connect to DB first
+    // Connect to the DB
     connectToDB();
 
     // Find the original thread by its id
