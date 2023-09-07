@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 
 import { connectToDB } from "@/lib/mongoose";
 import User from "@/lib/models/user.model";
+import Thread from "@/lib/models/thread.model";
 
 interface Params {
   userId: string;
@@ -72,5 +73,38 @@ export async function fetchUser(userId: string) {
     // })
   } catch (error: any) {
     throw new Error(`[LOG] Failed to fetch user: ${error.message}`);
+  }
+}
+
+/**
+ * API - Get/Fetch ALL threads (and its children threads) from "User" table via user ID
+ * @param userId - User ID
+ * @returns
+ */
+export async function fetchUserPosts(userId: string) {
+  try {
+    // Connect to DB first
+    connectToDB();
+
+    // Find all threads authored by the user with the given userId
+    const threads = await User.findOne({ id: userId })
+      /* TODO: Populate community */
+      .populate({
+        path: "threads",
+        model: Thread,
+        populate: {
+          path: "children",
+          model: Thread,
+          populate: {
+            path: "author",
+            model: User,
+            select: "username image id",
+          },
+        },
+      });
+
+    return threads;
+  } catch (error: any) {
+    throw new Error(`[LOG] Failed to fetch user threads: ${error.message}`);
   }
 }
