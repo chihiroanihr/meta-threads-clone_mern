@@ -23,7 +23,7 @@ interface Params {
  * @param param0 - User object
  */
 export async function updateUser({
-  id,
+  userId,
   username,
   name,
   bio,
@@ -36,7 +36,7 @@ export async function updateUser({
 
     // Upsert a User object
     await User.findOneAndUpdate(
-      { id: id },
+      { id: userId },
       { username: username.toLowerCase(), name, bio, image, onboarded: true },
       { upsert: true } // "Insert" + "Update"
       /*
@@ -56,16 +56,16 @@ export async function updateUser({
 
 /**
  * API - Get/Fetch a user info from "User" table via user's id.
- * @param id
+ * @param userId - User ID
  * @returns
  */
-export async function fetchUser(id: string) {
+export async function fetchUser(userId: string) {
   try {
     // Connect to DB first
     connectToDB();
 
     // Find a User info based on user's id
-    return await User.findOne({ id: id });
+    return await User.findOne({ id: userId });
     // .populate({
     //     path: "communities",
     //     model: Community

@@ -114,7 +114,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
 
     // Update user profile (Call to backend)
     await updateUser({
-      id: user.id,
+      userId: user.id,
       username: values.username,
       name: values.name,
       bio: values.bio,
