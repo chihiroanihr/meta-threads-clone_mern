@@ -5,6 +5,8 @@ import ThreadCard from "@/components/cards/ThreadCard";
 
 export default async function Home() {
   const user = await currentUser();
+
+  // Fetch all threads for given pagination (Call to backend)
   const result = await fetchThreads(1); /* TODO: Dynamic Pagination Input **/
 
   return (

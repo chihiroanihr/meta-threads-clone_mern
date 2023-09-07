@@ -10,7 +10,7 @@ async function Page() {
   // If no currently logged in user
   if (!user) return null;
 
-  // Fetch user info from database
+  // Fetch user info via its id (Call to backend)
   const userInfo = await fetchUser(user.id);
 
   // If no user info exists

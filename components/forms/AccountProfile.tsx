@@ -94,7 +94,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
   };
 
   /**
-   * Form submit handler - Call DB to update user profile.
+   * Form submit handler - Call backend to update user profile.
    * ✅ This will be type-safe and validated.
    * @param values -  An object with a structure that conforms to the type defined by "UserValidation".
    */
@@ -112,7 +112,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
       }
     }
 
-    // Call DB to update user profile
+    // Update user profile (Call to backend)
     await updateUser({
       id: user.id,
       username: values.username,

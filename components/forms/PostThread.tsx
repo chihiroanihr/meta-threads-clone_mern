@@ -36,11 +36,12 @@ function PostThread({ userId }: { userId: string }) {
   });
 
   /**
-   * Form submit handler - Call DB to insert thread post.
+   * Form submit handler - Call backend to insert thread post.
    * ✅ This will be type-safe and validated.
    * @param values -  An object with a structure that conforms to the type defined by "ThreadValidation".
    */
   const onSubmit = async (values: z.infer<typeof ThreadValidation>) => {
+    // Insert/Create thread post (Call to backend)
     await createThread({
       text: values.thread,
       author: userId,
