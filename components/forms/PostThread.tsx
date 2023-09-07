@@ -44,7 +44,7 @@ function PostThread({ userId }: { userId: string }) {
     // Insert/Create thread post (Call to backend)
     await createThread({
       text: values.thread,
-      author: userId,
+      author: JSON.parse(userId),
       communityId: null,
       path: pathname,
     });
