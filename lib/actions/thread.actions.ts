@@ -10,7 +10,7 @@ import { connectToDB } from "@/lib/mongoose";
 import Thread from "@/lib/models/thread.model";
 import User from "@/lib/models/user.model";
 
-interface Params {
+interface CreateThreadParams {
   text: string;
   author: string;
   communityId: string | null;
@@ -26,7 +26,7 @@ export async function createThread({
   author,
   communityId,
   path,
-}: Params) {
+}: CreateThreadParams) {
   try {
     // Connect to DB first
     connectToDB();
