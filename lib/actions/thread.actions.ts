@@ -107,7 +107,7 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 }
 
 /**
- * API - Get/Fetch a thred post from the "Thread" table via (thread) object id.
+ * API - Get/Fetch a thred post from the "Thread" table via (thread) object ID.
  * @param id - Thread object ID
  * @returns
  */

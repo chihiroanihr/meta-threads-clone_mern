@@ -4,6 +4,7 @@ import { fetchThreads } from "@/lib/actions/thread.actions";
 import ThreadCard from "@/components/cards/ThreadCard";
 
 export default async function Home() {
+  // Check if user authenticated
   const user = await currentUser();
 
   // Fetch all threads for given pagination (Call to backend)

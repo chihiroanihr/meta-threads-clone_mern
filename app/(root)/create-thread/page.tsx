@@ -5,14 +5,13 @@ import { fetchUser } from "@/lib/actions/user.actions";
 import PostThread from "@/components/forms/PostThread";
 
 async function Page() {
+  // Check if user authenticated
   const user = await currentUser();
-
-  // If no currently logged in user
+  // If no currently logged-in user
   if (!user) return null;
 
-  // Fetch user info via its id (Call to backend)
+  // Fetch user info via its currently logged-in user ID (Call to backend)
   const userInfo = await fetchUser(user.id);
-
   // If no user info exists
   if (!userInfo?.onboarded) redirect("/onboarding");
 

@@ -56,7 +56,7 @@ export async function updateUser({
 }
 
 /**
- * API - Get/Fetch a user info from "User" table via user's id.
+ * API - Get/Fetch a user info from "User" table via user ID
  * @param userId - User ID
  * @returns
  */

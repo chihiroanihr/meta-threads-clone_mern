@@ -29,6 +29,9 @@ interface CommentProps {
 function Comment({ threadId, currentUserId, currentUserImg }: CommentProps) {
   const pathname = usePathname();
 
+  /**
+   * Define your form
+   */
   const form = useForm({
     resolver: zodResolver(CommentValidation),
     defaultValues: {

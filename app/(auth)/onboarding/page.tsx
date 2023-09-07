@@ -3,6 +3,7 @@ import { currentUser } from "@clerk/nextjs";
 import AccountProfile from "@/components/forms/AccountProfile";
 
 async function Page() {
+  // Check if user authenticated
   const user = await currentUser();
 
   /* TODO: Connect with Database to fetch. */

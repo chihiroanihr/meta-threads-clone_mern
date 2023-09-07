@@ -7,18 +7,19 @@ import { fetchUser } from "@/lib/actions/user.actions";
 import { fetchThreadById } from "@/lib/actions/thread.actions";
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  if (!params.id) return null;
-
   // Check if user authenticated
   const user = await currentUser();
+  // If no currently logged-in user
   if (!user) return null;
 
-  // Fetch user info via its id (Call to backend)
+  // Fetch user info via its currently logged-in user ID (Call to backend)
   const userInfo = await fetchUser(user.id);
   // Check if user has onboarded (user info is stored) (Call to backend)
   if (!userInfo?.onboarded) redirect("/onboard");
 
-  // Fetch the detailed thread info via its id (Call to backend)
+  // Check if "clicked" user exists
+  if (!params.id) return null;
+  // Fetch the detailed thread info of the "clicked" user via its user ID (Call to backend)
   const thread = await fetchThreadById(params.id);
 
   return (

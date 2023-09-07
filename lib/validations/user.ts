@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-// Form Schema
+// User profile form schema
 export const UserValidation = z.object({
   profile_photo: z.string().url().nonempty(),
   name: z.string().min(1).max(30),
