@@ -18,7 +18,7 @@ interface Params {
 }
 
 /**
- * API - Insert thread in the "Thread" table.
+ * API - Insert a thread in the "Thread" table.
  * @param param0 - Thread object
  */
 export async function createThread({

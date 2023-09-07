@@ -19,7 +19,7 @@ interface Params {
 }
 
 /**
- * API - Update user info in the "User" table.
+ * API - Update a user info in the "User" table.
  * @param param0 - User object
  */
 export async function updateUser({
@@ -55,7 +55,7 @@ export async function updateUser({
 }
 
 /**
- * API - Fetch user info based on userId from "User" table.
+ * API - Get/Fetch a user info from "User" table via userId.
  * @param userId
  * @returns
  */
