@@ -10,7 +10,7 @@ import { connectToDB } from "@/lib/mongoose";
 import User from "@/lib/models/user.model";
 
 interface Params {
-  userId: string;
+  id: string;
   username: string;
   name: string;
   bio: string;
@@ -23,7 +23,7 @@ interface Params {
  * @param param0 - User object
  */
 export async function updateUser({
-  userId,
+  id,
   username,
   name,
   bio,
@@ -36,7 +36,7 @@ export async function updateUser({
 
     // Upsert a User object
     await User.findOneAndUpdate(
-      { id: userId },
+      { id: id },
       { username: username.toLowerCase(), name, bio, image, onboarded: true },
       { upsert: true } // "Insert" + "Update"
       /*
@@ -55,17 +55,17 @@ export async function updateUser({
 }
 
 /**
- * API - Get/Fetch a user info from "User" table via userId.
- * @param userId
+ * API - Get/Fetch a user info from "User" table via user's id.
+ * @param id
  * @returns
  */
-export async function fetchUser(userId: string) {
+export async function fetchUser(id: string) {
   try {
     // Connect to DB first
     connectToDB();
 
-    // Find a User info based on userID
-    return await User.findOne({ id: userId });
+    // Find a User info based on user's id
+    return await User.findOne({ id: id });
     // .populate({
     //     path: "communities",
     //     model: Community
