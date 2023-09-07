@@ -16,7 +16,6 @@ async function ThreadsTab({
 }: ThreadsTabProps) {
   // Fetch all threads for "clicked" user via  its user ID (Call to backend)
   let result = await fetchUserPosts(userId);
-
   /* TODO: if no result then display blank instead of redirect. */
   if (!result) redirect("/");
 
