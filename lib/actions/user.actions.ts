@@ -81,7 +81,7 @@ export async function fetchUser(userId: string) {
  * @param userId - User ID
  * @returns
  */
-export async function fetchUserPosts(userId: string) {
+export async function fetchUserThreads(userId: string) {
   try {
     // Connect to DB first
     connectToDB();

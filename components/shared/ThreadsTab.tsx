@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { ThreadCard } from "@/components/cards";
-import { fetchUserPosts } from "@/lib/actions/user.actions";
+import { fetchUserThreads } from "@/lib/actions/user.actions";
 
 interface ThreadsTabProps {
   currentUserId: string;
@@ -15,7 +15,7 @@ async function ThreadsTab({
   accountType,
 }: ThreadsTabProps) {
   // Fetch all threads for "clicked" user via  its user ID (Call to backend)
-  let result = await fetchUserPosts(userId);
+  let result = await fetchUserThreads(userId);
   /* TODO: if no result then display blank instead of redirect. */
   if (!result) redirect("/");
 
