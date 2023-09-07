@@ -96,3 +96,55 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
     throw new Error(`[LOG] Error creating thread: ${error.message}`);
   }
 }
+
+/**
+ * API - Get/Fetch a thred post from the "Thread" table via (thread) object id.
+ * @param id
+ * @returns
+ */
+export async function fetchThreadById(id: string) {
+  try {
+    // Connect to DB first
+    connectToDB();
+
+    const thread = await Thread.findById(id)
+      // Get author user information
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id id username image",
+      })
+
+      /* TODO: Populate the community field with _id and name */
+
+      // Get related comments threads (nested!)
+      .populate({
+        path: "children",
+        populate: [
+          // Get author user information for each comments threads
+          {
+            path: "author",
+            model: User,
+            select: "_id id username parentId image",
+          },
+          // Get related comments threads for each comments threads
+          {
+            path: "children",
+            model: Thread,
+            populate: {
+              // Get author user information for each comments threads
+              path: "author",
+              model: User,
+              select: "_id id username parentId image",
+            },
+          },
+        ],
+      })
+      // Execute the query
+      .exec();
+
+    return thread;
+  } catch (error: any) {
+    throw new Error(`Error fetching thread: ${error.message}`);
+  }
+}
