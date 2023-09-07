@@ -38,7 +38,7 @@ export async function createThread({
       community: null,
     });
 
-    // Update user model (Push the thread to the specific user/author via its userId)
+    // Update user model (Push the thread to the specific author)
     await User.findByIdAndUpdate(author, {
       $push: { threads: threadCreated._id },
     });
