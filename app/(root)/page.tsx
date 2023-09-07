@@ -6,6 +6,8 @@ import { fetchThreads } from "@/lib/actions/thread.actions";
 export default async function Home() {
   // Check if user authenticated
   const user = await currentUser();
+  // If no currently logged-in user
+  if (!user) return null;
 
   // Fetch all threads for given pagination (Call to backend)
   const result = await fetchThreads(1); /* TODO: Dynamic Pagination Input **/

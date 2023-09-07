@@ -13,10 +13,13 @@ async function Page({ params }: { params: { id: string } }) {
   // If no currently logged-in user
   if (!user) return null;
 
+  // Check if "clicked" user exists /* TODO: display user not found */
+  if (!params.id) return null;
   // Fetch user info of the "clicked" user via its user ID (Call to backend)
   const userInfo = await fetchUser(params.id); // !! params.id instead of user.id from currentUser() since we could be checking other account's profile.
-  // If no user info exists
-  if (!userInfo?.onboarded) redirect("/onboarding");
+
+  // If user is currently logged-in user yet no user info exists
+  if (user.id === userInfo.id && !userInfo?.onboarded) redirect("/onboarding");
 
   return (
     <section>

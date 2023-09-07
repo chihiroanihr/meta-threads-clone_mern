@@ -14,10 +14,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   // Fetch user info via its currently logged-in user ID (Call to backend)
   const userInfo = await fetchUser(user.id);
-  // Check if user has onboarded (user info is stored) (Call to backend)
-  if (!userInfo?.onboarded) redirect("/onboard");
+  // If user is currently logged-in user yet no user info exists
+  if (user.id === userInfo.id && !userInfo?.onboarded) redirect("/onboarding");
 
-  // Check if "clicked" user exists
+  // Check if "clicked" user exists /* TODO: display user not found */
   if (!params.id) return null;
   // Fetch the detailed thread info of the "clicked" user via its user ID (Call to backend)
   const thread = await fetchThreadById(params.id);
