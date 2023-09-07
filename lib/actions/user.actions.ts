@@ -10,13 +10,21 @@ import { connectToDB } from "@/lib/mongoose";
 import Thread from "@/lib/models/thread.model";
 import User from "@/lib/models/user.model";
 
-interface Params {
+interface UpdateUserParams {
   userId: string;
   username: string;
   name: string;
   bio: string;
   image: string;
   path: string;
+}
+
+interface FetchUsersParams {
+  userId: string;
+  searchString?: string;
+  pageNumber?: number;
+  pageSize?: number;
+  sortBy?: SortOrder;
 }
 
 /**
@@ -30,7 +38,7 @@ export async function updateUser({
   bio,
   image,
   path,
-}: Params): Promise<void> {
+}: UpdateUserParams): Promise<void> {
   try {
     // Connect to the DB
     connectToDB();
