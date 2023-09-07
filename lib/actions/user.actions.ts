@@ -53,3 +53,24 @@ export async function updateUser({
     throw new Error(`[LOG] Failed to create/update user: ${error.message}`);
   }
 }
+
+/**
+ * API - Fetch user info based on userId from "User" table.
+ * @param userId
+ * @returns
+ */
+export async function fetchUser(userId: string) {
+  try {
+    // Connect to DB first
+    connectToDB();
+
+    // Find a User info based on userID
+    return await User.findOne({ id: userId });
+    // .populate({
+    //     path: "communities",
+    //     model: Community
+    // })
+  } catch (error: any) {
+    throw new Error(`[LOG] Failed to fetch user: ${error.message}`);
+  }
+}
