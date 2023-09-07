@@ -17,6 +17,13 @@ interface CreateThreadParams {
   path: string;
 }
 
+interface AddCommentToThreadParams {
+  originalThreadId: string;
+  commentedText: string;
+  commentedAuthor: string;
+  path: string;
+}
+
 /**
  * API - Insert a thread in the "Thread" table.
  * @param param0 - Thread object
@@ -148,5 +155,50 @@ export async function fetchThreadById(id: string) {
     return thread;
   } catch (error: any) {
     throw new Error(`Error fetching thread: ${error.message}`);
+  }
+}
+
+/**
+ * API - Insert a comment thread in the "Thread" table and update the original thread with to include the new comment thread.
+ * @param param0 - Commented thread object
+ */
+export async function addCommentToThread({
+  originalThreadId,
+  commentedText,
+  commentedAuthor,
+  path,
+}: AddCommentToThreadParams) {
+  try {
+    // Connect to DB first
+    connectToDB();
+
+    // Find the original thread by its id
+    const originalThread = await Thread.findById(originalThreadId);
+
+    // If original thread not found
+    if (!originalThread) {
+      throw new Error("Thread not found.");
+    }
+
+    // Create a new thread with the comment text
+    const commentThread = new Thread({
+      text: commentedText,
+      author: commentedAuthor,
+      parentId: originalThreadId,
+    });
+
+    // Save the new thread
+    const savedCommentThread = await commentThread.save();
+
+    // Update the original thread to include the new comment threds
+    originalThread.children.push(savedCommentThread._id);
+
+    // Save the original thread
+    await originalThread.save();
+
+    // Update cached data without waiting for a revalidation period to expire.
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error adding comment to thread: ${error.message}`);
   }
 }
