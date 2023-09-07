@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { SignedIn, SignOutButton } from "@clerk/nextjs";
+import { SignedIn, SignOutButton, useAuth } from "@clerk/nextjs";
 import { twMerge } from "tailwind-merge";
 
 import { sidebarLinks } from "@/constants";
@@ -11,6 +11,7 @@ import { sidebarLinks } from "@/constants";
 function LeftSidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { userId } = useAuth();
 
   return (
     // Left sidebar on Desktop devices (Bottom-bar on Mobile devices)
@@ -21,6 +22,11 @@ function LeftSidebar() {
           const isActive =
             (pathname.includes(link.route) && link.route.length > 1) ||
             pathname === link.route;
+
+          // Fix profile link route to current user's profile link
+          if (link.route === "/profile") {
+            link.route = `${link.route}/${userId}`;
+          }
 
           return (
             <Link
