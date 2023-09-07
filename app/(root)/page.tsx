@@ -1,7 +1,7 @@
 import { UserButton, currentUser } from "@clerk/nextjs";
 
+import { ThreadCard } from "@/components/cards";
 import { fetchThreads } from "@/lib/actions/thread.actions";
-import ThreadCard from "@/components/cards/ThreadCard";
 
 export default async function Home() {
   // Check if user authenticated

@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 // User profile form schema
 export const UserValidation = z.object({

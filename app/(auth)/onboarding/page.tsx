@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs";
 
-import AccountProfile from "@/components/forms/AccountProfile";
+import { AccountProfile } from "@/components/forms";
 
 async function Page() {
   // Check if user authenticated

@@ -1,18 +1,15 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-
-import * as z from "zod";
+import { useState, ChangeEvent } from "react";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { isBase64Image } from "@/lib/utils";
-import { UserValidation } from "@/lib/validations/user";
-import { useUploadThing } from "@/lib/validations/uploadthing";
-import { updateUser } from "@/lib/actions/user.actions";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -21,8 +18,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { isBase64Image } from "@/lib/utils";
+import { UserValidation } from "@/lib/validations/user";
+import { useUploadThing } from "@/lib/validations/uploadthing";
+import { updateUser } from "@/lib/actions/user.actions";
 
 interface AccountProfileProps {
   user: {

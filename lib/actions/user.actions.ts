@@ -7,8 +7,8 @@ Reference: https://nextjs.org/docs/app/api-reference/functions/server-actions
 import { revalidatePath } from "next/cache";
 
 import { connectToDB } from "@/lib/mongoose";
-import User from "@/lib/models/user.model";
 import Thread from "@/lib/models/thread.model";
+import User from "@/lib/models/user.model";
 
 interface Params {
   userId: string;

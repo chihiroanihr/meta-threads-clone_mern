@@ -7,7 +7,7 @@ import {
   Bottombar,
   LeftSidebar,
   RightSidebar,
-} from "@/components/shared/";
+} from "@/components/shared";
 
 import "../globals.css";
 

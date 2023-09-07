@@ -2,9 +2,9 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
-import { fetchUser } from "@/lib/actions/user.actions";
 import { ProfileHeader, ThreadsTab } from "@/components/shared";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { profileTabs } from "@/constants";
 
 async function Page({ params }: { params: { id: string } }) {

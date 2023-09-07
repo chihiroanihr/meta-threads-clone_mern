@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 
 // Thread post form schema
 export const ThreadValidation = z.object({

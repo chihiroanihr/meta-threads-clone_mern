@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
+import { PostThread } from "@/components/forms";
 import { fetchUser } from "@/lib/actions/user.actions";
-import PostThread from "@/components/forms/PostThread";
 
 async function Page() {
   // Check if user authenticated

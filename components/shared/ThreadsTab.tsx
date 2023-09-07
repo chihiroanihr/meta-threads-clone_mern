@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
+import { ThreadCard } from "@/components/cards";
 import { fetchUserPosts } from "@/lib/actions/user.actions";
-import ThreadCard from "@/components/cards/ThreadCard";
 
 interface ThreadsTabProps {
   currentUserId: string;
