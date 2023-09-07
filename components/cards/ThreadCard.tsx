@@ -75,7 +75,12 @@ const ThreadCard = ({
             <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
             {/* ---- Action Content ---- */}
-            <div className="mt-5 flex flex-col gap-3">
+            <div
+              className={twMerge(
+                "mt-5 flex flex-col gap-3",
+                isComment && "mb-10"
+              )}
+            >
               <div className="flex gap-3.5">
                 {/* Like Button */}
                 <Image
