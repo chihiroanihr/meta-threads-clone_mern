@@ -52,7 +52,9 @@ export async function createThread({
 
 /**
  * API - Get/Fetch ALL thread posts from the "Thread" table.
- * @param param0 - Thread object
+ * @param pageNumber - Current page number
+ * @param pageSize - Maximum thread posts number in a single page
+ * @returns
  */
 export async function fetchThreads(pageNumber = 1, pageSize = 20) {
   try {
@@ -99,7 +101,7 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 
 /**
  * API - Get/Fetch a thred post from the "Thread" table via (thread) object id.
- * @param id
+ * @param id - Thread object ID
  * @returns
  */
 export async function fetchThreadById(id: string) {

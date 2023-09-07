@@ -22,6 +22,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
 
   return (
     <section className="relative">
+      {/* Thread Post */}
       <div>
         <ThreadCard
           key={thread._id}
