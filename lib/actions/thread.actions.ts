@@ -102,7 +102,7 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 
     return { threads, isNext };
   } catch (error: any) {
-    throw new Error(`[LOG] Error creating thread: ${error.message}`);
+    throw new Error(`[LOG] Error fetching threads: ${error.message}`);
   }
 }
 
@@ -177,7 +177,7 @@ export async function addCommentToThread({
 
     // If original thread not found
     if (!originalThread) {
-      throw new Error("[LOG] Thread not found.");
+      throw new Error("[LOG] Original thread not found.");
     }
 
     // Create a new thread with the comment text
@@ -199,6 +199,8 @@ export async function addCommentToThread({
     // Update cached data without waiting for a revalidation period to expire.
     revalidatePath(path);
   } catch (error: any) {
-    throw new Error(`[LOG] Error adding comment to thread: ${error.message}`);
+    throw new Error(
+      `[LOG] Error adding comment thread to the original thread: ${error.message}`
+    );
   }
 }

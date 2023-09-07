@@ -51,7 +51,9 @@ export async function updateUser({
       revalidatePath(path);
     }
   } catch (error: any) {
-    throw new Error(`[LOG] Failed to create/update user: ${error.message}`);
+    throw new Error(
+      `[LOG] Error updating / creating new user: ${error.message}`
+    );
   }
 }
 
@@ -72,7 +74,7 @@ export async function fetchUser(userId: string) {
     //     model: Community
     // })
   } catch (error: any) {
-    throw new Error(`[LOG] Failed to fetch user: ${error.message}`);
+    throw new Error(`[LOG] Error fetching user: ${error.message}`);
   }
 }
 
@@ -105,6 +107,8 @@ export async function fetchUserThreads(userId: string) {
 
     return threads;
   } catch (error: any) {
-    throw new Error(`[LOG] Failed to fetch user threads: ${error.message}`);
+    throw new Error(`[LOG] Error fetching user threads: ${error.message}`);
+  }
+}
   }
 }
