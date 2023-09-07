@@ -25,7 +25,7 @@ export const ourFileRouter = {
     .middleware(async ({ req }) => {
       // Check user authorized
       const user = await getUser(); // This code runs on your server before upload
-      if (!user) throw new Error("Unauthorized"); // If you throw, the user will not be able to upload
+      if (!user) throw new Error("[LOG] Unauthorized"); // If you throw, the user will not be able to upload
 
       // Return User ID
       return { userId: user.id }; // Whatever is returned here is accessible in onUploadComplete as `metadata`
