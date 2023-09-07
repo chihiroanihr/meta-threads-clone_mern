@@ -97,7 +97,7 @@ export async function fetchUserThreads(userId: string) {
     connectToDB();
 
     // Find all threads authored by the user with the given userId
-    const threads = await User.findOne({ id: userId })
+    return await User.findOne({ id: userId })
       /* TODO: Populate community */
       .populate({
         path: "threads",
@@ -112,8 +112,6 @@ export async function fetchUserThreads(userId: string) {
           },
         },
       });
-
-    return threads;
   } catch (error: any) {
     throw new Error(`[LOG] Error fetching user threads: ${error.message}`);
   }
