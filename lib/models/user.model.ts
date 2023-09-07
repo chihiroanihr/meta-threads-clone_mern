@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   id: { type: String, required: true },
   username: { type: String, required: true, unique: true },
-  name: { type: String },
+  name: { type: String, required: true },
   image: String,
   bio: String,
   // One user can create/belong to many threads (One user can have multiple references to "Thread" table.)
