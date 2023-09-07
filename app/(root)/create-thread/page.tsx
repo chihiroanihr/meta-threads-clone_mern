@@ -12,7 +12,7 @@ async function Page() {
 
   // Fetch user info via its currently logged-in user ID (Call to backend)
   const userInfo = await fetchUser(user.id);
-  // If no user info exists
+  // If no currently logged-in user info exists
   if (!userInfo?.onboarded) redirect("/onboarding");
 
   return (

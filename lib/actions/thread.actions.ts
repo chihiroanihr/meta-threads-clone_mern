@@ -160,7 +160,7 @@ export async function fetchThreadById(id: string) {
 
 /**
  * API - Insert a comment thread in the "Thread" table and update the original thread with to include the new comment thread.
- * @param param0 - Commented thread object
+ * @param param0 - Comment thread object
  */
 export async function addCommentToThread({
   originalThreadId,

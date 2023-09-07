@@ -56,7 +56,7 @@ export async function updateUser({
 }
 
 /**
- * API - Get/Fetch a user info from "User" table via user ID
+ * API - Get/Fetch a user info from the "User" table via user ID
  * @param userId - User ID
  * @returns
  */
@@ -77,7 +77,7 @@ export async function fetchUser(userId: string) {
 }
 
 /**
- * API - Get/Fetch ALL threads (and its children threads) from "User" table via user ID
+ * API - Get/Fetch ALL threads (and its children threads) from the "User" table via user ID
  * @param userId - User ID
  * @returns
  */
