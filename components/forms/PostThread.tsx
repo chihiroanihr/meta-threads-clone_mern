@@ -31,7 +31,7 @@ function PostThread({ userId }: { userId: string }) {
     // Bring default values from login information
     defaultValues: {
       thread: "",
-      accountId: userId,
+      userId: userId,
     },
   });
 
