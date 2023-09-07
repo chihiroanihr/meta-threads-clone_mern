@@ -10,7 +10,9 @@ export default async function Home() {
   if (!user) return null;
 
   // Fetch all threads for given pagination (Call to backend)
-  const result = await fetchThreads(1); /* TODO: Dynamic Pagination Input **/
+  const result = await fetchThreads({
+    pageNumber: 1,
+  }); /* TODO: Dynamic Pagination Input **/
 
   return (
     <div>

@@ -17,6 +17,11 @@ interface CreateThreadParams {
   path: string;
 }
 
+interface FetchThreadsParams {
+  pageNumber?: number;
+  pageSize?: number;
+}
+
 interface AddCommentToThreadParams {
   originalThreadId: string;
   commentedText: string;
@@ -58,12 +63,14 @@ export async function createThread({
 }
 
 /**
- * API - Get/Fetch ALL thread posts from the "Thread" table.
- * @param pageNumber - Current page number
- * @param pageSize - Maximum thread posts number in a single page
+ * API - Get/Fetch ALL threads from the "Thread" table.
+ * @param param0 - Page info object
  * @returns
  */
-export async function fetchThreads(pageNumber = 1, pageSize = 20) {
+export async function fetchThreads({
+  pageNumber = 1,
+  pageSize = 20,
+}: FetchThreadsParams) {
   try {
     // Define the query for top-level threads (which have no more parents than itself)
     const query = { parentId: { $in: [null, undefined] } }; // $in condition : "parentId" is in NULL or UNDEFINED
