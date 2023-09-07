@@ -10,7 +10,7 @@ import { connectToDB } from "@/lib/mongoose";
 import User from "@/lib/models/user.model";
 
 interface Params {
-  id: string;
+  userId: string;
   username: string;
   name: string;
   bio: string;
