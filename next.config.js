@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "uploadthing.com",
       },
+      {
+        protocol: "https",
+        hostname: "utfs.io", // Allow cloud.mongodb.com to post images on our nextjs app.
+      },
     ],
     typescript: {
       ignoreBuildErrors: true,
