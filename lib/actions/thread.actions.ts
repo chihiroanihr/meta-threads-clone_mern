@@ -65,16 +65,16 @@ export async function createThread({
  */
 export async function fetchThreads(pageNumber = 1, pageSize = 20) {
   try {
-    // Connect to DB first
+    // Define the query for top-level threads (which have no more parents than itself)
+    const query = { parentId: { $in: [null, undefined] } }; // $in condition : "parentId" is in NULL or UNDEFINED
+
+    // Connect to the DB
     connectToDB();
 
-    // Calculate the number of posts to skip depending on current page
-    const skipAmount = (pageNumber - 1) * pageSize;
-
-    // Fetch all the (top-level) thread posts that (which have no more parents than itself)
-    const threadsQuery = Thread.find({ parentId: { $in: [null, undefined] } }) // "parentId is in NULL or UNDEFINED."
-      .sort({ createdAt: "desc" }) // order latest.
-      .skip(skipAmount)
+    // Fetch all the top-level threads with query projection
+    const threads = await Thread.find(query)
+      .sort({ createdAt: "desc" }) // order latest
+      .skip((pageNumber - 1) * pageSize) // number of posts to skip depending on current page
       .limit(pageSize)
       // Get author user information
       .populate({ path: "author", model: User })
@@ -87,18 +87,14 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
           model: User,
           select: "_id username parentId image",
         },
-      });
+      })
+      .lean(); // for improved performance
 
-    // Execute the above query
-    const threads = await threadsQuery.exec();
-
-    // Get total number of (top-level) thread posts
-    const totalThreadsCount = await Thread.countDocuments({
-      parentId: { $in: [null, undefined] },
-    });
+    // Get the total number of top-level threads without fetching all documents
+    const totalThreadsCount = await Thread.countDocuments(query);
 
     // Next page exists
-    const isNext = totalThreadsCount > skipAmount + threads.length;
+    const isNext = totalThreadsCount > pageNumber * pageSize;
 
     return { threads, isNext };
   } catch (error: any) {
