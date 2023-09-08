@@ -28,7 +28,7 @@ interface FetchUsersParams {
 }
 
 /**
- * API - Update a user info in the "User" table.
+ * API - Update a user info in the "User" table via user ID.
  * @param param0 - User object
  */
 export async function updateUser({
@@ -66,7 +66,7 @@ export async function updateUser({
 }
 
 /**
- * API - Get/Fetch a user info from the "User" table via user ID
+ * API - Get/Fetch a user info from the "User" table via user ID.
  * @param userId - User ID
  * @returns
  */
@@ -87,7 +87,8 @@ export async function fetchUser(userId: string) {
 }
 
 /**
- * API - Get/Fetch ALL threads (and its children threads) from the "User" table via user ID
+ * API - Get/Fetch ALL threads and its children threads (comments/replies) which belongs to the given user ID.
+ * (Children threads are fetched from the "User" table)
  * @param userId - User ID
  * @returns
  */

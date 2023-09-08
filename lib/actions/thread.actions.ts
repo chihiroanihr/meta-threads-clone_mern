@@ -30,7 +30,7 @@ interface AddCommentToThreadParams {
 }
 
 /**
- * API - Insert a thread in the "Thread" table.
+ * API - Insert a new thread in the "Thread" table created by given user.
  * @param param0 - Thread object
  */
 export async function createThread({
@@ -110,7 +110,7 @@ export async function fetchThreads({
 }
 
 /**
- * API - Get/Fetch a thread from the "Thread" table via (thread) object ID.
+ * API - Get/Fetch a thread from the "Thread" table based on its object ID.
  * @param id - Thread object ID
  * @returns
  */
@@ -162,7 +162,9 @@ export async function fetchThreadById(id: string) {
 }
 
 /**
- * API - Insert a comment thread in the "Thread" table and update the original thread with to include the new comment thread.
+ * API
+ * 1. Insert a new thread (comment/reply thread) in the "Thread" table.
+ * 2. Update the original thread to include the newly created child thread (comment/reply thread).
  * @param param0 - Comment thread object
  */
 export async function addCommentToThread({
