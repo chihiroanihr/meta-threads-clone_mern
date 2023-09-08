@@ -117,5 +117,45 @@ export async function fetchUserThreads(userId: string) {
     throw new Error(`[LOG] Error fetching user threads: ${error.message}`);
   }
 }
+/**
+ * API - Get/Fetch ALL children threads (replies) that are made by others towards the given user ID (currently logged-in user).
+ * (Reply threads are fetched from the "Thread" table)
+ * @param userId - User ID
+ * @returns
+ */
+export async function getActivity(userId: string) {
+  try {
+    // Connect to the DB
+    connectToDB();
+
+    // Find all threads created by the user
+    const userThreads = await Thread.find({ author: userId });
+
+    // Collect all child thread (comments/replies) IDs from the "children" field
+    const childrenThreadIds = userThreads.reduce(
+      (acc, userThread) => {
+        /*
+      1. acc: Accumulates the children threads from an array of "userThreads".
+      2. concat(): Creates a new array by merging the accumulated elements ("acc" array) with the "userThread.children" array.
+      3. reduce(): Concatenate all the child thread object IDs (_id) from each "userThread" into a single array stored in the "childrenThreadIds".
+      */
+        return acc.concat(userThread.children); // Retrieves object _id.
+      },
+      [] // default acc
+    );
+
+    // Fetch all replies **made by other users** from the children threads created
+    const replies = await Thread.find({
+      _id: { $in: childrenThreadIds }, // thread ID exists in children threads
+      author: { $ne: userId }, // author is not current user ID (must exclude curent user ID)
+    }).populate({
+      path: "author",
+      model: User,
+      select: "username image _id",
+    });
+
+    return replies;
+  } catch (error: any) {
+    throw new Error(`[LOG] Error fetching activity: ${error.message}`);
   }
 }
