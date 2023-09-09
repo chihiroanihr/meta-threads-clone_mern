@@ -14,8 +14,17 @@ async function ThreadsTabContent({
   accountType,
 }: ThreadsTabContentProps) {
   let result: any;
+
+  // If account type is Community
+  if (accountType === "Community") {
+    // Fetch all threads for "clicked" community via its user ID (Call to backend)
+    result = await fetchCommunityThreads(accountId);
+  }
+  // If account type is User
+  else {
     // Fetch all threads for "clicked" user via its user ID (Call to backend)
     result = await fetchUserThreads(accountId);
+  }
 
   return (
     <section className="mt-9 flex flex-col gap-10">

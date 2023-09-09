@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { connectToDB } from "@/lib/mongoose";
 import Thread from "@/lib/models/thread.model";
 import User from "@/lib/models/user.model";
+import Community from "@/lib/models/community.model";
 
 interface CreateThreadParams {
   text: string;
@@ -43,18 +44,29 @@ export async function createThread({
   path,
 }: CreateThreadParams) {
   try {
+    const communityIdObject = await Community.findOne(
+      { id: communityId },
+      { _id: 1 }
+    );
 
     // Create/Insert a Thread object
     const newThread = await Thread.create({
       text,
       author,
-      community: null,
+      community: communityIdObject, // Assign communityId if provided, or leave it null for personal account
     });
 
     // Update "User" table (Push the thread to the specific author)
     await User.findByIdAndUpdate(author, {
       $push: { threads: newThread._id },
     });
+
+    // Update "Community" table if community exists (Push the thread to the community)
+    if (communityIdObject) {
+      await Community.findByIdAndUpdate(communityIdObject, {
+        $push: { threads: newThread._id },
+      });
+    }
 
     // Update cached data without waiting for a revalidation period to expire.
     revalidatePath(path);
@@ -83,6 +95,11 @@ export async function fetchThreads({
       .limit(pageSize)
       // Get author user information
       .populate({ path: "author", model: User })
+      // Get related community
+      .populate({
+        path: "community",
+        model: Community,
+      })
       // Get related comments threads
       .populate({
         path: "children",
@@ -121,9 +138,12 @@ export async function fetchThreadById(id: string) {
         model: User,
         select: "_id id username image",
       })
-
-      /* TODO: Populate the community field with _id and name */
-
+      // Get related community
+      .populate({
+        path: "community",
+        model: Community,
+        select: "_id id name image",
+      })
       // Get related comments threads (nested!)
       .populate({
         path: "children",

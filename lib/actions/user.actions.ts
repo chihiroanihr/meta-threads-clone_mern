@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { connectToDB } from "@/lib/mongoose";
 import Thread from "@/lib/models/thread.model";
 import User from "@/lib/models/user.model";
+import Community from "@/lib/models/community.model";
 
 interface UpdateUserParams {
   userId: string;
@@ -73,11 +74,12 @@ export async function updateUser({
 export async function fetchUser(userId: string) {
   try {
     // Find a User info based on user's id
-    return await User.findOne({ id: userId });
-    // .populate({
-    //     path: "communities",
-    //     model: Community
-    // })
+    return await User.findOne({ id: userId })
+      // Get communities that the user belongs to
+      .populate({
+        path: "communities",
+        model: Community,
+      });
   } catch (error: any) {
     throw new Error(`[LOG] Error fetching user: ${error.message}`);
   }
@@ -93,20 +95,28 @@ export async function fetchUserThreads(userId: string) {
   try {
     // Find all threads authored by the user with the given userId
     return await User.findOne({ id: userId })
-      /* TODO: Populate community */
       // Get all threads
       .populate({
         path: "threads",
         model: Thread,
-        populate: {
-          path: "children",
-          model: Thread,
-          populate: {
-            path: "author",
-            model: User,
-            select: "username image id",
+        populate: [
+          // Get a community that each threads belongs to
+          {
+            path: "community",
+            model: Community,
+            select: "name id image _id",
           },
-        },
+          // Get children threads (replies/comments) from each threads
+          {
+            path: "children",
+            model: Thread,
+            populate: {
+              path: "author",
+              model: User,
+              select: "username image id",
+            },
+          },
+        ],
       });
   } catch (error: any) {
     throw new Error(`[LOG] Error fetching user threads: ${error.message}`);

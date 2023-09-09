@@ -141,6 +141,23 @@ const ThreadCard = ({
           {/* Date Creation */}
           <div className="inline-flex flex-wrap items-center text-subtle-medium text-gray-1">
             <p>{formatDateString(createdAt)}</p>
+
+            {/* Community Info */}
+            {community && (
+              <Link
+                href={`/communities/${community.id}`}
+                className="inline-flex items-center"
+              >
+                <p> - {community.name} Community</p>
+                <Image
+                  src={community.image}
+                  alt="community profile"
+                  width={14}
+                  height={14}
+                  className="ml-1 rounded-full object-cover"
+                />
+              </Link>
+            )}
           </div>
         </div>
       )}
