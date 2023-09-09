@@ -1,19 +1,21 @@
 import { ThreadCard } from "@/components/cards";
+import { fetchCommunityThreads } from "@/lib/actions/community.actions";
 import { fetchUserThreads } from "@/lib/actions/user.actions";
 
-interface ThreadsTabProps {
-  currentUserId: string;
-  userId: string;
-  accountType: string;
+interface ThreadsTabContentProps {
+  currentAccountId: string;
+  accountId: string;
+  accountType: "User" | "Community";
 }
 
-async function ThreadsTab({
-  currentUserId,
-  userId,
+async function ThreadsTabContent({
+  currentAccountId,
+  accountId,
   accountType,
-}: ThreadsTabProps) {
-  // Fetch all threads for "clicked" user via  its user ID (Call to backend)
-  let result = await fetchUserThreads(userId);
+}: ThreadsTabContentProps) {
+  let result: any;
+    // Fetch all threads for "clicked" user via its user ID (Call to backend)
+    result = await fetchUserThreads(accountId);
 
   return (
     <section className="mt-9 flex flex-col gap-10">
@@ -27,7 +29,7 @@ async function ThreadsTab({
             <ThreadCard
               key={thread._id}
               id={thread._id}
-              currentUserId={currentUserId}
+              currentUserId={currentAccountId}
               parentId={thread.parentId}
               content={thread.text}
               author={
@@ -54,4 +56,4 @@ async function ThreadsTab({
   );
 }
 
-export default ThreadsTab;
+export default ThreadsTabContent;

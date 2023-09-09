@@ -3,7 +3,7 @@ import LeftSidebar from "./LeftSidebar";
 import RightSidebar from "./RightSidebar";
 import Bottombar from "./Bottombar";
 import ProfileHeader from "./ProfileHeader";
-import ThreadsTab from "./ThreadsTab";
+import ThreadsTabContent from "./ThreadsTabContent";
 
 export {
   Topbar,
@@ -11,5 +11,5 @@ export {
   RightSidebar,
   Bottombar,
   ProfileHeader,
-  ThreadsTab,
+  ThreadsTabContent,
 };
