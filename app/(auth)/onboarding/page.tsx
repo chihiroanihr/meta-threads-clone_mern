@@ -1,20 +1,30 @@
+import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
 import { AccountProfile } from "@/components/forms";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 async function Page() {
   // Check if user authenticated
   const user = await currentUser();
+  // If no currently logged-in user
+  if (!user) return null;
 
-  /* TODO: Connect with Database to fetch. */
-  const userInfo = {};
+  // Fetch user info via its currently logged-in user ID (Call to backend)
+  const userInfo = await fetchUser(user.id);
+  // IF user has onboarded then redirect to Home.
+  if (userInfo?.onboarding) redirect("/");
+
   const userData = {
     id: user?.id,
     objectId: userInfo?._id,
-    username: userInfo?.username || user?.username,
-    name: userInfo?.name || `${user?.firstName} ${user?.lastName}` || "",
-    bio: userInfo?.bio || "",
-    image: userInfo?.image || user.imageUrl,
+    username: userInfo ? userInfo.username : user?.username,
+    name:
+      userInfo?.name ||
+      `${user?.firstName || ""} ${user?.lastName || ""}`.trim() ||
+      "",
+    bio: userInfo ? userInfo.bio : "",
+    image: userInfo ? userInfo.image : user.imageUrl,
   };
 
   return (
