@@ -112,6 +112,55 @@ export async function fetchUserThreads(userId: string) {
     throw new Error(`[LOG] Error fetching user threads: ${error.message}`);
   }
 }
+
+/**
+ * API - Get/Fetch ALL users based on the search string given.
+ * @param param0 - Search input and page info object
+ * @returns
+ */
+export async function fetchUsers({
+  userId,
+  searchString = "",
+  pageNumber = 1,
+  pageSize = 20,
+  sortBy = "desc",
+}: FetchUsersParams) {
+  try {
+    // Get search string as regex
+    const regex = new RegExp(searchString, "i"); // case-insensitive
+
+    // Define query filters
+    const query: FilterQuery<typeof User> = {
+      id: { $ne: userId }, // $ne = "not equal to" : filter-out current user ID.
+    };
+    // If search string exists
+    if (searchString.trim() !== "") {
+      // $or conditions : match either by username or name
+      query.$or = [
+        { username: { $regex: regex } },
+        { name: { $regex: regex } },
+      ];
+    }
+
+    // Fetch all users that matches with the query filtered above
+    const users = await User.find(query)
+      .sort({ createdAt: sortBy }) // sort options
+      .skip((pageNumber - 1) * pageSize) // number of posts to skip depending on current page
+      .limit(pageSize)
+      .lean(); // for improved performance
+
+    // Get total count of users without fetching all documents
+    const totalUsersCount = await User.countDocuments(query);
+
+    // Next page exists
+    const isNext = totalUsersCount > pageNumber * pageSize;
+
+    return { users, isNext };
+  } catch (error: any) {
+    throw new Error(`[LOG] Error fetching users: ${error.message}`);
+  }
+}
+
 /**
  * API - Get/Fetch ALL children threads (replies) that are made by others towards the given user ID (currently logged-in user).
  * (Reply threads are fetched from the "Thread" table)
