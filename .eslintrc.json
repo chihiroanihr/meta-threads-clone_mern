@@ -4,7 +4,7 @@
     "prettier",
     "plugin:tailwindcss/recommended"
   ],
-  "plugins": ["sort-keys-custom-order", "unused-imports", "tailwindcss"],
+  "plugins": ["unused-imports", "tailwindcss"],
   "rules": {
     // For unused imports
     "unused-imports/no-unused-imports": ["error", { "severity": "warn" }]
