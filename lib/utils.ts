@@ -29,4 +29,3 @@ export function formatDateString(dateString: string) {
 
   return newDateString;
 }
-}
