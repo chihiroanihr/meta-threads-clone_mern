@@ -28,4 +28,3 @@ export function formatDateString(dateString: string) {
   return `${formattedTime} — ${formattedDate}`;
 }
 
-}
