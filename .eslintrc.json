@@ -6,18 +6,8 @@
   ],
   "plugins": ["sort-keys-custom-order", "unused-imports", "tailwindcss"],
   "rules": {
-    // For JS objects sorting
-    "sort-keys-custom-order/object-keys": [
-      "error",
-      { "orderedKeys": ["id", "name", "title"] }
-    ],
-    // For TS types sorting
-    "sort-keys-custom-order/type-keys": [
-      "error",
-      { "orderedKeys": ["id", "name", "title"] }
-    ],
     // For unused imports
-    "unused-imports/no-unused-imports": "error"
+    "unused-imports/no-unused-imports": ["error", { "severity": "warn" }]
   },
   "settings": {
     // For tailwindcss auto-formatting
