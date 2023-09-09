@@ -45,7 +45,7 @@ export async function createThread({
   try {
 
     // Create/Insert a Thread object
-    const threadCreated = await Thread.create({
+    const newThread = await Thread.create({
       text,
       author,
       community: null,
@@ -53,7 +53,7 @@ export async function createThread({
 
     // Update "User" table (Push the thread to the specific author)
     await User.findByIdAndUpdate(author, {
-      $push: { threads: threadCreated._id },
+      $push: { threads: newThread._id },
     });
 
     // Update cached data without waiting for a revalidation period to expire.
@@ -114,7 +114,7 @@ export async function fetchThreads({
  */
 export async function fetchThreadById(id: string) {
   try {
-    const thread = await Thread.findById(id)
+    return await Thread.findById(id)
       // Get author user information
       .populate({
         path: "author",
@@ -146,11 +146,7 @@ export async function fetchThreadById(id: string) {
             },
           },
         ],
-      })
-      // Execute the query
-      .exec();
-
-    return thread;
+      });
   } catch (error: any) {
     throw new Error(`[LOG] Error fetching thread: ${error.message}`);
   }

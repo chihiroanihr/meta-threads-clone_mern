@@ -137,7 +137,7 @@ export async function getActivity(userId: string) {
     );
 
     // Fetch all replies **made by other users** from the children threads created
-    const replies = await Thread.find({
+    return await Thread.find({
       _id: { $in: childrenThreadIds }, // thread ID exists in children threads
       author: { $ne: userId }, // author is not current user ID (must exclude curent user ID)
     }).populate({
@@ -145,7 +145,6 @@ export async function getActivity(userId: string) {
       model: User,
       select: "username image _id",
     });
-    return replies;
   } catch (error: any) {
     throw new Error(`[LOG] Error fetching activity: ${error.message}`);
   }
