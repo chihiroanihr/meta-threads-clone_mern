@@ -2,7 +2,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
-import { ProfileHeader, ThreadsTab } from "@/components/shared";
+import { ProfileHeader, ThreadsTabContent } from "@/components/shared";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { profileTabs } from "@/constants";
@@ -24,12 +24,13 @@ async function Page({ params }: { params: { id: string } }) {
   return (
     <section>
       <ProfileHeader
-        currentUserId={user.id}
-        userId={userInfo.id}
-        name={userInfo.name}
-        username={userInfo.username}
-        bio={userInfo.bio}
-        imgUrl={userInfo.image}
+        currentAccountId={user.id}
+        accountId={userInfo.id}
+        accountName={userInfo.name}
+        accountUsername={userInfo.username}
+        accountBio={userInfo.bio}
+        accountImage={userInfo.image}
+        accountType="User"
       />
 
       {/* Tabs section */}
@@ -68,9 +69,9 @@ async function Page({ params }: { params: { id: string } }) {
               value={tab.value}
               className="w-full text-light-1"
             >
-              <ThreadsTab
-                currentUserId={user.id}
-                userId={userInfo.id} // we could be checking other account's profile.
+              <ThreadsTabContent
+                currentAccountId={user.id}
+                accountId={userInfo.id} // we could be checking other account's profile.
                 accountType="User"
               />
             </TabsContent>
