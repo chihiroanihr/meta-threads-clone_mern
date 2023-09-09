@@ -27,6 +27,9 @@ interface FetchUsersParams {
   sortBy?: SortOrder;
 }
 
+// Connect to the DB
+connectToDB();
+
 /**
  * API - Update a user info in the "User" table via user ID.
  * @param param0 - User object
@@ -40,9 +43,6 @@ export async function updateUser({
   path,
 }: UpdateUserParams): Promise<void> {
   try {
-    // Connect to the DB
-    connectToDB();
-
     // Upsert a User object
     await User.findOneAndUpdate(
       { id: userId },
@@ -72,9 +72,6 @@ export async function updateUser({
  */
 export async function fetchUser(userId: string) {
   try {
-    // Connect to the DB
-    connectToDB();
-
     // Find a User info based on user's id
     return await User.findOne({ id: userId });
     // .populate({
@@ -94,9 +91,6 @@ export async function fetchUser(userId: string) {
  */
 export async function fetchUserThreads(userId: string) {
   try {
-    // Connect to the DB
-    connectToDB();
-
     // Find all threads authored by the user with the given userId
     return await User.findOne({ id: userId })
       /* TODO: Populate community */
@@ -125,9 +119,6 @@ export async function fetchUserThreads(userId: string) {
  */
 export async function getActivity(userId: string) {
   try {
-    // Connect to the DB
-    connectToDB();
-
     // Find all threads created by the user
     const userThreads = await Thread.find({ author: userId });
 

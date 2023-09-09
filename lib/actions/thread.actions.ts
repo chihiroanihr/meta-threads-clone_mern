@@ -29,6 +29,9 @@ interface AddCommentToThreadParams {
   path: string;
 }
 
+// Connect to the DB
+connectToDB();
+
 /**
  * API - Insert a new thread in the "Thread" table created by given user.
  * @param param0 - Thread object
@@ -40,8 +43,6 @@ export async function createThread({
   path,
 }: CreateThreadParams) {
   try {
-    // Connect to the DB
-    connectToDB();
 
     // Create/Insert a Thread object
     const threadCreated = await Thread.create({
@@ -74,9 +75,6 @@ export async function fetchThreads({
   try {
     // Define the query for top-level threads (which have no more parents than itself)
     const query = { parentId: { $in: [null, undefined] } }; // $in condition : "parentId" is in NULL or UNDEFINED
-
-    // Connect to the DB
-    connectToDB();
 
     // Fetch all the top-level threads with query projection
     const threads = await Thread.find(query)
@@ -116,9 +114,6 @@ export async function fetchThreads({
  */
 export async function fetchThreadById(id: string) {
   try {
-    // Connect to the DB
-    connectToDB();
-
     const thread = await Thread.findById(id)
       // Get author user information
       .populate({
@@ -174,9 +169,6 @@ export async function addCommentToThread({
   path,
 }: AddCommentToThreadParams) {
   try {
-    // Connect to the DB
-    connectToDB();
-
     // Find the original thread by its id
     const originalThread = await Thread.findById(originalThreadId);
 
