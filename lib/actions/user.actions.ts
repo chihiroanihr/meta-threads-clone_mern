@@ -94,6 +94,7 @@ export async function fetchUserThreads(userId: string) {
     // Find all threads authored by the user with the given userId
     return await User.findOne({ id: userId })
       /* TODO: Populate community */
+      // Get all threads
       .populate({
         path: "threads",
         model: Thread,
@@ -125,14 +126,14 @@ export async function getActivity(userId: string) {
     // Collect all child thread (comments/replies) IDs from the "children" field
     const childrenThreadIds = userThreads.reduce(
       (acc, userThread) => {
-        /*
+        return acc.concat(userThread.children); // Retrieves object _id.
+      },
+      [] // default acc
+      /*
       1. acc: Accumulates the children threads from an array of "userThreads".
       2. concat(): Creates a new array by merging the accumulated elements ("acc" array) with the "userThread.children" array.
       3. reduce(): Concatenate all the child thread object IDs (_id) from each "userThread" into a single array stored in the "childrenThreadIds".
       */
-        return acc.concat(userThread.children); // Retrieves object _id.
-      },
-      [] // default acc
     );
 
     // Fetch all replies **made by other users** from the children threads created
@@ -144,7 +145,6 @@ export async function getActivity(userId: string) {
       model: User,
       select: "username image _id",
     });
-
     return replies;
   } catch (error: any) {
     throw new Error(`[LOG] Error fetching activity: ${error.message}`);

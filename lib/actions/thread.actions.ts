@@ -51,7 +51,7 @@ export async function createThread({
       community: null,
     });
 
-    // Update user model (Push the thread to the specific author)
+    // Update "User" table (Push the thread to the specific author)
     await User.findByIdAndUpdate(author, {
       $push: { threads: threadCreated._id },
     });
@@ -76,7 +76,7 @@ export async function fetchThreads({
     // Define the query for top-level threads (which have no more parents than itself)
     const query = { parentId: { $in: [null, undefined] } }; // $in condition : "parentId" is in NULL or UNDEFINED
 
-    // Fetch all the top-level threads with query projection
+    // Fetch all the top-level threads matches with the query filtered above
     const threads = await Thread.find(query)
       .sort({ createdAt: "desc" }) // order latest
       .skip((pageNumber - 1) * pageSize) // number of posts to skip depending on current page
@@ -171,7 +171,6 @@ export async function addCommentToThread({
   try {
     // Find the original thread by its id
     const originalThread = await Thread.findById(originalThreadId);
-
     // If original thread not found
     if (!originalThread) {
       throw new Error("[LOG] Original thread not found.");
@@ -183,13 +182,11 @@ export async function addCommentToThread({
       author: commentedAuthor,
       parentId: originalThreadId,
     });
-
     // Save the new thread
     const savedCommentThread = await commentThread.save();
 
     // Update the original thread to include the new comment threds
     originalThread.children.push(savedCommentThread._id);
-
     // Save the original thread
     await originalThread.save();
 

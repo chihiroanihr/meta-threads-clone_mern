@@ -28,6 +28,6 @@ const userSchema = new mongoose.Schema({
 
 const User =
   mongoose.models.User || // Existing mongoose model (more than second time access)
-  mongoose.model("User", userSchema); // Create mongoose model based on the user schema  (first time access)
+  mongoose.model("User", userSchema); // Create mongoose model based on the above schema created (first time access)
 
 export default User;

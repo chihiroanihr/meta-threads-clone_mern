@@ -41,6 +41,6 @@ const threadSchema = new mongoose.Schema({
 
 const Thread =
   mongoose.models.Thread || // Existing mongoose model (more than second time access)
-  mongoose.model("Thread", threadSchema); // Create mongoose model based on the Thread schema  (first time access)
+  mongoose.model("Thread", threadSchema); // Create mongoose model based on the above schema created (first time access)
 
 export default Thread;
