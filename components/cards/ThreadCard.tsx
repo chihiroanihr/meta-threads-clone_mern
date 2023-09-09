@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
+import { formatDateString } from "@/lib/utils";
+
 interface ThreadCardProps {
   id: string;
   currentUserId: string;
@@ -130,6 +132,18 @@ const ThreadCard = ({
           </div>
         </div>
       </div>
+
+      {/* TODO: Delete Thread */}
+      {/* TODO: Show comment logos */}
+
+      {!isComment && (
+        <div className="mt-5 flex items-center">
+          {/* Date Creation */}
+          <div className="inline-flex flex-wrap items-center text-subtle-medium text-gray-1">
+            <p>{formatDateString(createdAt)}</p>
+          </div>
+        </div>
+      )}
     </article>
   );
 };
