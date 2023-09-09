@@ -25,7 +25,7 @@ export function formatDateString(dateString: string) {
     minute: "2-digit",
   });
 
-  const newDateString = `${formattedTime} — ${formattedDate}`;
+  return `${formattedTime} — ${formattedDate}`;
+}
 
-  return newDateString;
 }
