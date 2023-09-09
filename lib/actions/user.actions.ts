@@ -5,6 +5,7 @@ Reference: https://nextjs.org/docs/app/api-reference/functions/server-actions
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { FilterQuery, SortOrder } from "mongoose";
 
 import { connectToDB } from "@/lib/mongoose";
 import Thread from "@/lib/models/thread.model";
