@@ -9,7 +9,7 @@ export const connectToDB = async () => {
   const MONGODB_DB_NAME = process.env.MONGODB_DB_NAME;
 
   // If connection URL invalid
-  if (!MONGODB_USERNAME || !MONGODB_PASSWORD || MONGODB_CLUSTER_NAME)
+  if (!MONGODB_USERNAME || !MONGODB_PASSWORD || !MONGODB_CLUSTER_NAME)
     throw new Error("[LOG] Error: MongoDB connection URL not found.");
 
   // If already connected to the DB
