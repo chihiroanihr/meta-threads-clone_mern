@@ -65,8 +65,16 @@ export const POST = async (request: Request) => {
     Activitate Webhook in the Clerk Dashboard.
     After adding the endpoint, you'll see the secret on the right side.
     */
+    let webhookSecret: string;
+    // If webhook secret key exists
+    if (process.env.CLERK_WEBHOOK_SECRET) {
+      webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
+    } else {
+      throw new Error("[LOG] Error: Clerk webhook secret key not found.");
+    }
+
     // Create a new SVIX (webhook) instance with your secret
-    const webhook = new Webhook(process.env.NEXT_CLERK_WEBHOOK_SECRET || "");
+    const webhook = new Webhook(webhookSecret);
 
     let evnt: WebhookEvent | null = null;
 
