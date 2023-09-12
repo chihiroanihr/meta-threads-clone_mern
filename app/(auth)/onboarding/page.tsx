@@ -13,7 +13,7 @@ async function Page() {
   // Fetch user info via its currently logged-in user ID (Call to backend)
   const userInfo = await fetchUser(user.id);
   // IF user has onboarded then redirect to Home.
-  if (userInfo?.onboarding) redirect("/");
+  if (userInfo?.onboarded) redirect("/");
 
   const userData = {
     id: user?.id,
