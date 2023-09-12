@@ -21,7 +21,7 @@ function ProfileHeader({
   accountType,
 }: ProfileHeaderProps) {
   return (
-    <div className="w-full flex flex-col justify-start">
+    <div className="flex w-full flex-col justify-start">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Profile Image */}
@@ -46,7 +46,7 @@ function ProfileHeader({
         {/* Edit Account */}
         {accountId === currentAccountId && accountType !== "Community" && (
           <Link href="/profile/edit">
-            <div className="flex gap-3 rounded-lg px-4 py-2 bg-dark-3 cursor-pointer">
+            <div className="flex cursor-pointer gap-3 rounded-lg bg-dark-3 px-4 py-2">
               <Image
                 src="/assets/edit.svg"
                 alt="edit account"

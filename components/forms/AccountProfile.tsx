@@ -182,7 +182,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="w-full flex flex-col gap-3">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Name
               </FormLabel>
@@ -203,7 +203,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="w-full flex flex-col gap-3">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Username
               </FormLabel>
@@ -224,7 +224,7 @@ function AccountProfile({ user, buttonTitle }: AccountProfileProps) {
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem className="w-full flex flex-col gap-3">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Bio
               </FormLabel>
