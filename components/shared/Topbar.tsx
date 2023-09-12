@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { SignedIn, SignOutButton, OrganizationSwitcher } from "@clerk/nextjs";
+import { SignedIn, UserButton, OrganizationSwitcher } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
 function Topbar() {
+  // const router = useRouter();
+
   return (
     <nav className="top-bar">
       {/* Brand Logo */}
@@ -12,11 +14,31 @@ function Topbar() {
         <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
       </Link>
 
-      {/* Sign Out Button (only visible on small devices, will be on left sidebar on large devices.) */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        {/* Organization Switcher */}
+        <OrganizationSwitcher
+          appearance={{
+            baseTheme: dark,
+            elements: {
+              organizationSwitcherTrigger: "py-2 px-4",
+              organizationSwitcherTriggerIcon: "ml-0",
+            },
+          }}
+        />
+
+        {/* Sign Out Button (only visible on small devices, will be on left sidebar on large devices.) */}
         <div className="block md:hidden">
           <SignedIn>
-            <SignOutButton>
+            <UserButton
+              appearance={{
+                baseTheme: dark,
+                elements: {
+                  userButtonAvatarBox: "w-9 h-9",
+                },
+              }}
+              afterSignOutUrl="/sign-in"
+            />
+            {/* <SignOutButton>
               <div className="flex cursor-pointer">
                 <Image
                   src="/assets/logout.svg"
@@ -25,18 +47,9 @@ function Topbar() {
                   height={24}
                 />
               </div>
-            </SignOutButton>
+            </SignOutButton> */}
           </SignedIn>
         </div>
-
-        <OrganizationSwitcher
-          appearance={{
-            baseTheme: dark,
-            elements: {
-              organizationSwitcherTrigger: "py-2 px-4",
-            },
-          }}
-        />
       </div>
     </nav>
   );

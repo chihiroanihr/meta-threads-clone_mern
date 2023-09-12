@@ -2,14 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import { SignedIn, SignOutButton, useAuth } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
+import { SignedIn, useAuth, UserButton } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { twMerge } from "tailwind-merge";
 
 import { sidebarLinks } from "@/constants";
 
 function LeftSidebar() {
-  const router = useRouter();
+  // const router = useRouter();
   const pathname = usePathname();
   const { userId } = useAuth();
 
@@ -52,8 +53,19 @@ function LeftSidebar() {
       {/* Sign Out Button (only visible on large devices, will be on top-bar on small devices.) */}
       <div className="mt-10 px-6">
         <SignedIn>
-          <SignOutButton signOutCallback={() => router.push("/sign-in")}>
-            <div className="flex gap-4 p-4 cursor-pointer">
+          <div className="flex w-full justify-center">
+            <UserButton
+              appearance={{
+                baseTheme: dark,
+                elements: {
+                  userButtonAvatarBox: "w-10 h-10",
+                },
+              }}
+              afterSignOutUrl="/sign-in"
+            />
+          </div>
+          {/* <SignOutButton signOutCallback={() => router.push("/sign-in")}>
+            <div className="flex cursor-pointer gap-4 p-4">
               <Image
                 src="/assets/logout.svg"
                 alt="logout"
@@ -62,7 +74,7 @@ function LeftSidebar() {
               />
               <p className="text-light-2 max-lg:hidden">Logout</p>
             </div>
-          </SignOutButton>
+          </SignOutButton> */}
         </SignedIn>
       </div>
     </section>
