@@ -5,7 +5,7 @@ Reference: https://nextjs.org/docs/app/api-reference/functions/server-actions
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { FilterQuery, SortOrder } from "mongoose";
+import { FilterQuery, SortOrder, Types } from "mongoose";
 
 import { connectToDB } from "@/lib/mongoose";
 import Thread from "@/lib/models/thread.model";
@@ -88,37 +88,82 @@ export async function fetchUser(userId: string) {
 
 /**
  * API - Get/Fetch ALL threads and its children threads (comments/replies) which belongs to the given user ID.
- * (Children threads are fetched from the "User" table)
  * @param userId - User ID
  * @returns
  */
-export async function fetchUserThreads(userId: string) {
+export async function fetchUserThreads(
+  userObjectId: Types.ObjectId
+): Promise<any[]> {
   try {
-    // Find all threads authored by the user with the given userId
-    return await User.findOne({ id: userId })
-      // Get all threads
-      .populate({
-        path: "threads",
-        model: Thread,
-        populate: [
-          // Get a community that each threads belongs to
-          {
-            path: "community",
-            model: Community,
-            select: "name id image _id",
+    // Define a recursive function to fetch children threads
+    const fetchChildrenThreads = async (parentThread: any) => {
+      const childrenThreads = await Promise.all(
+        // Iterat all its childrens
+        parentThread.children.map(
+          async (childThreadObjectId: Types.ObjectId) => {
+            // Get Thread object via its child thread object ID
+            const childThread = await Thread.findById(childThreadObjectId);
+            // Recursive function
+            return fetchChildrenThreads(childThread);
+          }
+        )
+      );
+
+      // Return the result with the following format:
+      return { ...parentThread.toObject(), children: childrenThreads };
+    };
+
+    // Use the user's _id to query threads authored by the user
+    const userThreads = await Thread.find({
+      author: userObjectId,
+      parentId: null, // only retrieve top-level threads
+    });
+
+    // Collect all top-level threads and their nested children
+    const topLevelThreads = await Promise.all(
+      userThreads.map(async (userThread) => {
+        // Get author (user) of the thread
+        const userObj = await User.findById(userThread.author);
+        // Get community that thread belongs to
+        const communityObj = await Community.findById(userThread.community);
+        // Get all its children threads
+        const childrenThreads: any[] = await Promise.all(
+          // Iterate all its childrens
+          userThread.children.map(
+            async (childThreadObjectId: Types.ObjectId) => {
+              // Get Thread object via its child thread object ID
+              const childThread = await Thread.findById(childThreadObjectId);
+              // Recursive function
+              return fetchChildrenThreads(childThread);
+            }
+          )
+        );
+
+        // Return the result with the following format:
+        return {
+          _id: userThread._id,
+          text: userThread.text,
+          author: {
+            _id: userObj._id,
+            id: userObj.id,
+            username: userObj.username,
+            image: userObj.image,
           },
-          // Get children threads (replies/comments) from each threads
-          {
-            path: "children",
-            model: Thread,
-            populate: {
-              path: "author",
-              model: User,
-              select: "username image id",
-            },
-          },
-        ],
-      });
+          community: communityObj
+            ? {
+                _id: communityObj._id,
+                id: communityObj.id,
+                name: communityObj.name,
+                image: communityObj.image,
+              }
+            : null,
+          createdAt: userThread.createdAt,
+          children: childrenThreads,
+        };
+      })
+    );
+
+    return topLevelThreads;
   } catch (error: any) {
     throw new Error(`Error fetching user threads: ${error.message}`);
   }
