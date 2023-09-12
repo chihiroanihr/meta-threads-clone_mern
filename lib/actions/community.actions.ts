@@ -4,7 +4,7 @@ Reference: https://nextjs.org/docs/app/api-reference/functions/server-actions
 */
 "use server";
 
-import { FilterQuery, SortOrder } from "mongoose";
+import mongoose, { FilterQuery, SortOrder } from "mongoose";
 
 import { connectToDB } from "@/lib/mongoose";
 import Community from "@/lib/models/community.model";
@@ -320,28 +320,40 @@ export async function updateCommunityInfo({
  */
 export async function deleteCommunity(communityId: string) {
   try {
-    // Delete the community by its community ID
-    const deletedCommunity = await Community.findOneAndDelete({
-      id: communityId,
-    });
-    // If community not found
-    if (!deletedCommunity) {
-      throw new Error("[LOG] Community not found.");
+    // Find the community
+    const community = await Community.findOne({ id: communityId });
+    if (!community) {
+      throw new Error("Community not found.");
     }
 
-    // Delete all the threads associated with the community
-    await Thread.deleteMany({ community: communityId });
+    // Convert the _id string to a MongoDB ObjectId
+    const communityObjectId = new mongoose.Types.ObjectId(community._id);
 
-    // Find all users who are part of the community
-    const users = await User.find({ communities: communityId });
+    // Retrieve the list of threads associated with that community
+    const threadsToDelete = await Thread.find({ community: communityObjectId });
 
-    // Update the "User" table for each users by removing the community from their community arrays
-    const updateUserPromises = users.map(async (user) => {
-      user.communities.pull(communityId);
-      await user.save(); // Wait for the user to save
-    });
-    // Wait for all user updates to complete
-    await Promise.all(updateUserPromises);
+    // Delete all threads
+    await Promise.all(
+      threadsToDelete.map(async (thread) => {
+        // Remove references to the thread in the "User" table
+        await User.updateMany(
+          { threads: thread._id },
+          { $pull: { threads: thread._id } }
+        );
+        // Delete the thread from "Thread" table
+        await Thread.findByIdAndDelete(thread._id);
+      })
+    );
+
+    // Remove references to the community in the "User" table
+    await User.updateMany(
+      { communities: communityObjectId },
+      { $pull: { communities: communityObjectId } }
+    );
+
+    // Delete the community itself from the "Community" table
+    const deletedCommunity =
+      await Community.findByIdAndDelete(communityObjectId);
 
     return deletedCommunity;
   } catch (error: any) {
