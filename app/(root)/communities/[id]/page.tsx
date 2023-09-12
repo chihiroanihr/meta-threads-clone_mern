@@ -16,14 +16,17 @@ async function Page({ params }: { params: { id: string } }) {
 
   // Check if "clicked" community exists /* TODO: display user not found */
   if (!params.id) return null;
-  // Fetch community info of the "clicked" community via its cimmunity ID (Call to backend)
+
+  // Fetch community info of the "clicked" community via its community ID (Call to backend)
   const communityInfo = await fetchCommunityInfo(params.id);
+  // If no community
   if (!communityInfo) return null;
   const communityMembers = communityInfo.members;
   const communityThreads = communityInfo.threads;
 
   return (
     <section>
+      {/* -------- Profile Section -------- */}
       <ProfileHeader
         currentAccountId={user.id}
         accountId={communityInfo.id}
@@ -34,12 +37,11 @@ async function Page({ params }: { params: { id: string } }) {
         accountType="Community"
       />
 
-      {/* Tabs section */}
+      {/* -------- Tabs section -------- */}
       <div className="mt-9">
-        {/* Tab Container */}
         <Tabs defaultValue="threads" className="w-full">
+          {/* 3 Tabs */}
           <TabsList className="tab">
-            {/* Tab */}
             {communityTabs.map((tab) => (
               <TabsTrigger key={tab.label} value={tab.value} className="tab">
                 {/* Tab Image */}
@@ -51,10 +53,10 @@ async function Page({ params }: { params: { id: string } }) {
                   className="object-contain"
                 />
 
-                {/* Label (hide on small devices) */}
+                {/* Tab label (hide on small devices) */}
                 <p className="max-sm:hidden">{tab.label}</p>
 
-                {/* Number of thread posts the user has */}
+                {/* Number of thread posts the community has */}
                 {tab.label === "Threads" && (
                   <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
                     {communityThreads.length}
