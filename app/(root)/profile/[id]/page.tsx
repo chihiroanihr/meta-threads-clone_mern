@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs";
 
 import { ProfileHeader, ThreadsTabContent } from "@/components/shared";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { fetchUser } from "@/lib/actions/user.actions";
+import { fetchUser, fetchUserThreads } from "@/lib/actions/user.actions";
 import { profileTabs } from "@/constants";
 
 async function Page({ params }: { params: { id: string } }) {
@@ -15,11 +15,14 @@ async function Page({ params }: { params: { id: string } }) {
 
   // Check if "clicked" user exists /* TODO: display user not found */
   if (!params.id) return null;
+
   // Fetch user info of the "clicked" user via its user ID (Call to backend)
   const userInfo = await fetchUser(params.id); // !! params.id instead of user.id from currentUser() since we could be checking other account's profile.
+  // If user is not onboarded yet
+  if (!userInfo?.onboarded) redirect("/onboarding");
 
-  // If user is currently logged-in user yet no user info exists
-  if (user.id === userInfo.id && !userInfo?.onboarded) redirect("/onboarding");
+  // Fetch all threads that belong to the "clicked" user via its user ID (Call to backend)
+  const userThreads = await fetchUserThreads(userInfo._id);
 
   return (
     <section>
