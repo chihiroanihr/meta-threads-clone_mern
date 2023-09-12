@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { currentUser } from "@clerk/nextjs";
 
-import { ProfileHeader, ThreadsTabContent } from "@/components/shared";
+import { ProfileHeader } from "@/components/shared";
+import { ThreadsTabContent, MembersTabContent } from "@/components/tabs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchCommunityInfo } from "@/lib/actions/community.actions";
 import { communityTabs } from "@/constants";
@@ -17,6 +18,9 @@ async function Page({ params }: { params: { id: string } }) {
   if (!params.id) return null;
   // Fetch community info of the "clicked" community via its cimmunity ID (Call to backend)
   const communityInfo = await fetchCommunityInfo(params.id);
+  if (!communityInfo) return null;
+  const communityMembers = communityInfo.members;
+  const communityThreads = communityInfo.threads;
 
   return (
     <section>
@@ -52,8 +56,20 @@ async function Page({ params }: { params: { id: string } }) {
 
                 {/* Number of thread posts the user has */}
                 {tab.label === "Threads" && (
-                  <p className="ml-1 rounded-sm px-2 py-1 bg-light-4 !text-tiny-medium text-light-2">
-                    {communityInfo?.threads?.length}
+                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
+                    {communityThreads.length}
+                  </p>
+                )}
+                {/* Number of members the community has */}
+                {tab.label === "Members" && (
+                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
+                    {communityMembers.length}
+                  </p>
+                )}
+                {/* Number of requests the community has */}
+                {tab.label === "Requests" && (
+                  <p className="ml-1 rounded-sm bg-light-4 px-2 py-1 !text-tiny-medium text-light-2">
+                    {/* TODO: {communityInfo?.requests?.length}  */}
                   </p>
                 )}
               </TabsTrigger>
@@ -62,11 +78,13 @@ async function Page({ params }: { params: { id: string } }) {
 
           {/* Content - Threads Tab */}
           <TabsContent value="threads" className="w-full text-light-1">
-            <ThreadsTabContent
-              currentAccountId={user.id}
-              accountId={communityInfo._id} // we could be checking other account's profile.
-              accountType="Community"
-            />
+            <section className="mt-9 flex flex-col gap-10">
+              <ThreadsTabContent
+                currentAccountId={user.id}
+                accountType="Community"
+                data={communityThreads}
+              />
+            </section>
           </TabsContent>
 
           {/* Content - Members Tab */}
@@ -81,16 +99,16 @@ async function Page({ params }: { params: { id: string } }) {
                   image={member.image}
                 />;
               })}
+              <MembersTabContent
+                currentAccountId={user.id}
+                data={communityMembers}
+              />
             </section>
           </TabsContent>
 
           {/* Content - Requests Tab */}
           <TabsContent value="requests" className="w-full text-light-1">
-            <ThreadsTabContent
-              currentAccountId={user.id}
-              accountId={communityInfo._id} // we could be checking other account's profile.
-              accountType="Community"
-            />
+            {/* Todo */}
           </TabsContent>
         </Tabs>
       </div>
