@@ -30,11 +30,13 @@ interface FetchCommmunitiesFromSearchParams {
 interface AddMemberToCommunityParams {
   communityId: string;
   userId: string;
+  admin: boolean;
 }
 
 interface RemoveUserFromCommunityParams {
   communityId: string;
   userId: string;
+  admin: boolean;
 }
 
 interface UpdateCommunityInfoParams {
@@ -77,6 +79,7 @@ export async function createCommunity({
       bio: communityBio,
       createdBy: user._id, // Use the mongoose ID of the user
       members: [user._id], // Include the admin user as a member as well
+      admins: [user._id],
     });
     const createdCommunity = await newCommunity.save();
 
@@ -102,6 +105,11 @@ export async function fetchCommunityInfo(id: string) {
       "createdBy", // Also fetch community creation user's user info from the "User" table
       {
         path: "members",
+        model: User,
+        select: "name username image _id id",
+      },
+      {
+        path: "admins",
         model: User,
         select: "name username image _id id",
       },
@@ -201,6 +209,7 @@ export async function fetchCommunitiesFromSearch({
 export async function addMemberToCommunity({
   communityId,
   userId,
+  admin,
 }: AddMemberToCommunityParams) {
   try {
     // Find the community by its community ID
@@ -226,6 +235,12 @@ export async function addMemberToCommunity({
     community.members.push(user._id);
     await community.save();
 
+    // Update the admins array in the "Community" table to include the new user
+    if (admin) {
+      community.admins.push(user._id);
+      await community.save();
+    }
+
     // Update the communities array in the "User" table to include the community
     user.communities.push(community._id);
     await user.save();
@@ -248,6 +263,7 @@ export async function addMemberToCommunity({
 export async function removeUserFromCommunity({
   communityId,
   userId,
+  admin,
 }: RemoveUserFromCommunityParams) {
   try {
     // Find the user by its user ID
@@ -269,6 +285,14 @@ export async function removeUserFromCommunity({
       { _id: community._id },
       { $pull: { members: user._id } }
     );
+
+    // Update the admins array in the "Community" table to remove the user
+    if (admin) {
+      await Community.updateOne(
+        { _id: community._id },
+        { $pull: { admins: user._id } }
+      );
+    }
 
     // Update the communities array in the "User" table to remove the community
     await User.updateOne(

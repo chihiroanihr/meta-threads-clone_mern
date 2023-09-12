@@ -23,6 +23,12 @@ const communitySchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  admins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const Community =
