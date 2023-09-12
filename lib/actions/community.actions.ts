@@ -76,6 +76,7 @@ export async function createCommunity({
       image: communityImage,
       bio: communityBio,
       createdBy: user._id, // Use the mongoose ID of the user
+      members: [user._id], // Include the admin user as a member as well
     });
     const createdCommunity = await newCommunity.save();
 
