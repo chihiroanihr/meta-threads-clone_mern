@@ -127,7 +127,7 @@ export async function fetchCommunityInfo(id: string) {
 export async function fetchCommunityThreads(id: string) {
   try {
     // Fetch all community threads based on community ID
-    return await Community.findById(id).populate({
+    return await Community.findOne({ id }).populate({
       // Fetch each threads info from the "Thread" table
       path: "threads",
       model: Thread,
