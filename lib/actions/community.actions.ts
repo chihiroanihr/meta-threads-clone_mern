@@ -69,7 +69,7 @@ export async function createCommunity({
     }
 
     // Create/Insert a new community object
-    const newCommunity = await Community.create({
+    const newCommunity = new Community({
       id: communityId,
       name: communityName,
       slug: communitySlug,
@@ -77,12 +77,13 @@ export async function createCommunity({
       bio: communityBio,
       createdBy: user._id, // Use the mongoose ID of the user
     });
+    const createdCommunity = await newCommunity.save();
 
     // Update the user's community array in the "User" table with the new community's ID
-    user.communities.push(newCommunity._id);
+    user.communities.push(createdCommunity._id);
     await user.save();
 
-    return newCommunity;
+    return createdCommunity;
   } catch (error: any) {
     throw new Error(`[LOG] Error creating a community: ${error.message}`);
   }
