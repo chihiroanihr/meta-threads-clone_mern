@@ -65,7 +65,7 @@ export async function createCommunity({
     const user = await User.findOne({ id: createdByUserId });
     // If user not found
     if (!user) {
-      throw new Error("[LOG] Error: User not found.");
+      throw new Error("User not found.");
     }
 
     // Create/Insert a new community object
@@ -205,19 +205,19 @@ export async function addMemberToCommunity({
     const community = await Community.findOne({ id: communityId });
     // If community not found
     if (!community) {
-      throw new Error("[LOG] Community not found.");
+      throw new Error("Community not found.");
     }
 
     // Find the user by its user ID
     const user = await User.findOne({ id: userId });
     // IF user not found
     if (!user) {
-      throw new Error("[LOG] User not found.");
+      throw new Error("User not found.");
     }
 
     // If user is already a member of the community
     if (community.members.includes(user._id)) {
-      throw new Error("[LOG] User is already a member of the community.");
+      throw new Error("User is already a member of the community.");
     }
 
     // Update the members array in the "Community" table to include the new user
@@ -252,14 +252,14 @@ export async function removeUserFromCommunity({
     const user = await User.findOne({ id: userId }, { _id: 1 });
     // If user not found
     if (!user) {
-      throw new Error("[LOG] User not found.");
+      throw new Error("User not found.");
     }
 
     // Find the community by its community ID
     const community = await Community.findOne({ id: communityId }, { _id: 1 });
     // If community not found
     if (!community) {
-      throw new Error("[LOG] Community not found.");
+      throw new Error("Community not found.");
     }
 
     // Update the members array in the "Community" table to remove the user
@@ -301,7 +301,7 @@ export async function updateCommunityInfo({
     );
     // If community not found
     if (!updatedCommunity) {
-      throw new Error("[LOG] Community not found.");
+      throw new Error("Community not found.");
     }
 
     return updatedCommunity;

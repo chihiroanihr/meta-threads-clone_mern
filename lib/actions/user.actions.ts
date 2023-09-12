@@ -120,7 +120,7 @@ export async function fetchUserThreads(userId: string) {
         ],
       });
   } catch (error: any) {
-    throw new Error(`[LOG] Error fetching user threads: ${error.message}`);
+    throw new Error(`Error fetching user threads: ${error.message}`);
   }
 }
 
