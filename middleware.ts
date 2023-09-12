@@ -7,7 +7,7 @@ Reference: https://clerk.com/docs/references/nextjs/auth-middleware (Configuring
 
 export default authMiddleware({
   // An array of public routes that don't require authentication.
-  publicRoutes: ["/api/webhooks/clerk"],
+  publicRoutes: ["/", "/api/webhooks/clerk"],
 
   // An array of routes to be ignored by the authentication middleware.
   ignoredRoutes: ["/api/webhooks/clerk"],
