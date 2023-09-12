@@ -62,7 +62,7 @@ function Comment({ threadId, currentUserId, currentUserImg }: CommentProps) {
           control={form.control}
           name="thread"
           render={({ field }) => (
-            <FormItem className="w-full flex items-center gap-3">
+            <FormItem className="flex w-full items-center gap-3">
               <FormLabel>
                 <Image
                   src={currentUserImg}
@@ -77,7 +77,7 @@ function Comment({ threadId, currentUserId, currentUserImg }: CommentProps) {
                   {...field}
                   type="text"
                   placeholder="Comment..."
-                  className="no-focus outline-none text-light-1"
+                  className="no-focus text-light-1 outline-none"
                 />
               </FormControl>
             </FormItem>

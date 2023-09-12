@@ -21,7 +21,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={twMerge(inter.className, "bg-dark-1")}>
-          <div className="w-full min-h-screen flex items-center justify-center">
+          <div className="flex min-h-screen w-full items-center justify-center">
             {children}
           </div>
         </body>

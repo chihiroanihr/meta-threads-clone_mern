@@ -16,7 +16,7 @@ function LeftSidebar() {
   return (
     // Left sidebar on Desktop devices (Bottom-bar on Mobile devices)
     <section className="custom-scrollbar left-sidebar">
-      <div className="w-full flex flex-1 flex-col gap-6 px-6">
+      <div className="flex w-full flex-1 flex-col gap-6 px-6">
         {sidebarLinks.map((link) => {
           // Active Link
           const isActive =
