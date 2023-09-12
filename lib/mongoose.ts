@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 let isConnected = false; // Check connection status
 
 export const connectToDB = async () => {
+  // If already connected to the DB
+  if (isConnected) return console.log("[LOG] Already connected to MongoDB.");
+
   const MONGODB_USERNAME = process.env.MONGODB_USERNAME;
   const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
   const MONGODB_CLUSTER_NAME = process.env.MONGODB_CLUSTER_NAME;
@@ -11,9 +14,6 @@ export const connectToDB = async () => {
   // If connection URL invalid
   if (!MONGODB_USERNAME || !MONGODB_PASSWORD || !MONGODB_CLUSTER_NAME)
     throw new Error("[LOG] Error: MongoDB connection URL not found.");
-
-  // If already connected to the DB
-  if (isConnected) return console.log("[LOG] Already connected to MongoDB.");
 
   // DB connection URL
   const MONGODB_CONN_URL =
