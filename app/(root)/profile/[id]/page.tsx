@@ -2,7 +2,8 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
-import { ProfileHeader, ThreadsTabContent } from "@/components/shared";
+import { ProfileHeader } from "@/components/shared";
+import { ThreadsTabContent } from "@/components/tabs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchUser, fetchUserThreads } from "@/lib/actions/user.actions";
 import { profileTabs } from "@/constants";
@@ -68,15 +69,17 @@ async function Page({ params }: { params: { id: string } }) {
 
           {profileTabs.map((tab) => (
             <TabsContent
-              key={`content-${tab.label}`}
+              key={tab.value}
               value={tab.value}
               className="w-full text-light-1"
             >
-              <ThreadsTabContent
-                currentAccountId={user.id}
-                accountId={userInfo.id} // we could be checking other account's profile.
-                accountType="User"
-              />
+              <section className="mt-9 flex flex-col gap-10">
+                <ThreadsTabContent
+                  currentAccountId={user.id}
+                  accountType="User"
+                  data={userThreads}
+                />
+              </section>
             </TabsContent>
           ))}
         </Tabs>
