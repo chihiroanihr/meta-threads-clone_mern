@@ -28,3 +28,46 @@ export function formatDateString(dateString: string) {
   return `${formattedTime} ${formattedDate}`;
 }
 
+export function formatTimeAgo(dateString: string) {
+  const now = new Date(); // Current time
+  const date = new Date(dateString); // Passed time
+
+  // Convert into num to execute arithmetic operation
+  const diffInMilliseconds = now.getTime() - date.getTime();
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  if (diffInMilliseconds < minute) {
+    return "now";
+  } else if (diffInMilliseconds < hour) {
+    const minutes = Math.floor(diffInMilliseconds / minute);
+    return `${minutes}m`;
+  } else if (diffInMilliseconds < day) {
+    const hours = Math.floor(diffInMilliseconds / hour);
+    return `${hours}hr`;
+  } else if (diffInMilliseconds < month) {
+    const days = Math.floor(diffInMilliseconds / day);
+    return `${days}d`;
+  } else if (diffInMilliseconds < year) {
+    const months = Math.floor(diffInMilliseconds / month);
+    return `${months}mo`;
+  } else {
+    const years = Math.floor(diffInMilliseconds / year);
+    return `${years}yr`;
+  }
+}
+
+export function formatThreadCount(count: number): string {
+  if (count === 0) {
+    return "No Threads";
+  } else {
+    const threadCount = count.toString().padStart(2, "0");
+    const threadWord = count === 1 ? "Thread" : "Threads";
+
+    return `${threadCount} ${threadWord}`;
+  }
+}
