@@ -34,6 +34,7 @@ export default function RootLayout({
             <LeftSidebar />
 
             <section className="main-container">
+            <section className="main-container w-full overflow-hidden">
               <div className="w-full max-w-4xl">{children}</div>
             </section>
 
