@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
 import { UserCard } from "@/components/cards";
-import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
+import { fetchUser, fetchUsersFromSearch } from "@/lib/actions/user.actions";
 
 const Page = async () => {
   // Check if user authenticated
@@ -16,7 +16,7 @@ const Page = async () => {
   if (!userInfo?.onboarded) redirect("/onboarding");
 
   // Fetch all users based on given search input (Call to backend)
-  const result = await fetchUsers({
+  const result = await fetchUsersFromSearch({
     userId: user.id,
     searchString: "",
     pageNumber: 1,

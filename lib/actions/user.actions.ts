@@ -21,7 +21,7 @@ interface UpdateUserParams {
   path: string;
 }
 
-interface FetchUsersParams {
+interface FetchUsersFromSearchParams {
   userId: string;
   searchString?: string;
   pageNumber?: number;
@@ -129,13 +129,13 @@ export async function fetchUserThreads(userId: string) {
  * @param param0 - Search input and page info object
  * @returns
  */
-export async function fetchUsers({
+export async function fetchUsersFromSearch({
   userId,
   searchString = "",
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: FetchUsersParams) {
+}: FetchUsersFromSearchParams) {
   try {
     // Get search string as regex
     const regex = new RegExp(searchString, "i"); // case-insensitive

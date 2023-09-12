@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs";
 
 import { CommunityCard } from "@/components/cards";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { fetchCommunities } from "@/lib/actions/community.actions";
+import { fetchCommunitiesFromSearch } from "@/lib/actions/community.actions";
 
 const Page = async () => {
   // Check if user authenticated
@@ -17,7 +17,7 @@ const Page = async () => {
   if (!userInfo?.onboarded) redirect("/onboarding");
 
   // Fetch all communities based on given search input (Call to backend)
-  const result = await fetchCommunities({
+  const result = await fetchCommunitiesFromSearch({
     searchString: "",
     pageNumber: 1,
   });

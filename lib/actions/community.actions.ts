@@ -20,7 +20,7 @@ interface CreateCommunityParams {
   createdByUserId: string;
 }
 
-interface FetchCommmunitiesParams {
+interface FetchCommmunitiesFromSearchParams {
   searchString?: string;
   pageNumber?: number;
   pageSize?: number;
@@ -151,12 +151,12 @@ export async function fetchCommunityThreads(id: string) {
  * @param param0 - Search input and page info object
  * @returns
  */
-export async function fetchCommunities({
+export async function fetchCommunitiesFromSearch({
   searchString = "",
   pageNumber = 1,
   pageSize = 20,
   sortBy = "desc",
-}: FetchCommmunitiesParams) {
+}: FetchCommmunitiesFromSearchParams) {
   try {
     // Get search string as regex
     const regex = new RegExp(searchString, "i"); // case-insensitive
