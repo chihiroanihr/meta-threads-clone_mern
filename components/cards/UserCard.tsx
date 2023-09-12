@@ -6,13 +6,20 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 interface UserCardProps {
+  currentUserId?: string | null;
   id: string;
   name: string;
   username: string;
   image: string;
 }
 
-const UserCard = ({ id, name, username, image }: UserCardProps) => {
+const UserCard = ({
+  currentUserId = null,
+  id,
+  name,
+  username,
+  image,
+}: UserCardProps) => {
   const router = useRouter();
 
   return (
@@ -27,8 +34,17 @@ const UserCard = ({ id, name, username, image }: UserCardProps) => {
           className="rounded-full"
         />
         {/* Name & Username */}
-        <div className="flex-1 text-ellipsis">
-          <h4 className="text-base-semibold text-light-1">{name}</h4>
+        <div className="flex flex-1 flex-col gap-1 text-ellipsis">
+          {currentUserId === id ? ( // If user is an admin
+            <div className="flex items-center gap-3">
+              <h4 className="text-base-semibold text-light-1">{name}</h4>
+              <p className="text-gray-1">—</p>
+              <p className="text-gray-1">admin</p>
+            </div>
+          ) : (
+            // If normal user
+            <h4 className="text-base-semibold text-light-1">{name}</h4>
+          )}
           <p className="text-small-medium text-gray-1">@{username}</p>
         </div>
       </div>

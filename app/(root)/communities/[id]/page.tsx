@@ -6,7 +6,6 @@ import { ThreadsTabContent, MembersTabContent } from "@/components/tabs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchCommunityInfo } from "@/lib/actions/community.actions";
 import { communityTabs } from "@/constants";
-import { UserCard } from "@/components/cards";
 
 async function Page({ params }: { params: { id: string } }) {
   // Check if user authenticated
@@ -92,15 +91,6 @@ async function Page({ params }: { params: { id: string } }) {
           {/* Content - Members Tab */}
           <TabsContent value="members" className="w-full text-light-1">
             <section className="mt-9 flex flex-col gap-10">
-              {communityInfo?.members.map((member: any) => {
-                <UserCard
-                  key={member.id}
-                  id={member.id}
-                  name={member.name}
-                  username={member.username}
-                  image={member.image}
-                />;
-              })}
               <MembersTabContent
                 currentAccountId={user.id}
                 data={communityMembers}

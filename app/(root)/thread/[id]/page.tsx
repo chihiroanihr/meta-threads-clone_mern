@@ -62,6 +62,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             createdAt={threadChild.createdAt}
             comments={threadChild.children}
             isComment
+            displayReplyNumber={true}
           />
         ))}
       </div>
