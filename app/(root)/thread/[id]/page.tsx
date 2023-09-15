@@ -45,11 +45,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
           threadId={thread._id.toString()}
           currentUserId={userInfo._id.toString()}
           currentUserImg={userInfo.image}
+          currentCommunityId={thread.community?._id.toString()}
         />
       </div>
 
       {/* Comment */}
-      <div className="mt-10">
+      <div className="mt-10 flex flex-col gap-10">
         {thread.children.map((threadChild: any) => (
           <ThreadCard
             key={threadChild._id}
@@ -61,7 +62,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
             community={threadChild.community}
             createdAt={threadChild.createdAt}
             comments={threadChild.children}
-            isThreadDetailComment={true}
+            displayReplyNumber={true}
+            isThreadPageComment={true}
           />
         ))}
       </div>
