@@ -42,8 +42,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
       {/* Comment Form */}
       <div className="mt-7">
         <Comment
-          threadId={JSON.stringify(thread._id)}
-          currentUserId={JSON.stringify(userInfo._id)}
+          threadId={thread._id.toString()}
+          currentUserId={userInfo._id.toString()}
           currentUserImg={userInfo.image}
         />
       </div>
@@ -53,7 +53,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         {thread.children.map((threadChild: any) => (
           <ThreadCard
             key={threadChild._id}
-            id={threadChild._id}
+            id={threadChild._id.toString()} // cast to object ID fails
             currentUserId={user?.id || ""}
             parentId={threadChild.parentId}
             content={threadChild.text}

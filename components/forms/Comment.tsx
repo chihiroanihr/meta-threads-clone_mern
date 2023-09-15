@@ -45,9 +45,9 @@ function Comment({ threadId, currentUserId, currentUserImg }: CommentProps) {
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
     // Insert/Create thread comment post (Call to backend)
     await addCommentToThread({
-      originalThreadId: JSON.parse(threadId),
+      originalThreadId: threadId,
       commentedText: values.thread,
-      commentedAuthor: JSON.parse(currentUserId),
+      commentedAuthor: currentUserId,
       path: pathname,
     });
 
