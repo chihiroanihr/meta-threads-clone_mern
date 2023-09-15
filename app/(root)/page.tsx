@@ -33,6 +33,7 @@ export default async function Home() {
               community={thread.community}
               createdAt={thread.createdAt}
               comments={thread.children}
+              displayFirstComment={true}
               displayReplyNumber={true}
             />
           ))

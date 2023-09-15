@@ -4,6 +4,19 @@ import { twMerge } from "tailwind-merge";
 
 import { formatTimeAgo } from "@/lib/utils";
 
+interface CommentProps {
+  _id: string;
+  text: string;
+  author: {
+    id: string;
+    image: string;
+    username: string;
+  };
+  parentId: string | null;
+  children: any[];
+  createdAt: string;
+}
+
 interface ThreadCardProps {
   id: string;
   currentUserId: string;
@@ -20,14 +33,9 @@ interface ThreadCardProps {
     image: string;
   } | null;
   createdAt: string;
-  comments:
-    | {
-        author: {
-          image: string;
-        };
-      }[]
-    | null;
-  isComment?: boolean;
+  comments: CommentProps[] | null;
+  isThreadDetailComment?: boolean;
+  displayFirstComment?: boolean;
   displayReplyNumber?: boolean;
 }
 
@@ -45,7 +53,7 @@ interface ThreadCardContentProps {
     image: string;
   } | null;
   createdAt: string;
-  isComment: boolean;
+  gapsBtwComments: boolean;
 }
 
 const ThreadCardContent = ({
@@ -54,10 +62,10 @@ const ThreadCardContent = ({
   author,
   community,
   createdAt,
-  isComment,
+  gapsBtwComments,
 }: ThreadCardContentProps) => {
   return (
-    <div className="flex w-full flex-row gap-4">
+    <Link href={`/thread/${id}`} className="flex w-full flex-row gap-4">
       {/* --------- Row --------- */}
       <div className="flex flex-col items-center">
         {/* Profile Image */}
@@ -112,7 +120,9 @@ const ThreadCardContent = ({
         <p className="mt-2 text-small-regular text-light-2">{content}</p>
 
         {/* Action Content */}
-        <div className={twMerge("mt-5 flex gap-3.5", isComment && "mb-10")}>
+        <div
+          className={twMerge("mt-5 flex gap-3.5", gapsBtwComments && "mb-7")}
+        >
           {/* Like Button */}
           <Image
             src="/assets/heart-gray.svg"
@@ -155,7 +165,7 @@ const ThreadCardContent = ({
         {/* Date Creation */}
         <p>{formatTimeAgo(createdAt)}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 
@@ -168,14 +178,32 @@ const ThreadCard = ({
   community,
   createdAt,
   comments,
-  isComment = false,
+  isThreadDetailComment = false,
+  displayFirstComment = false,
   displayReplyNumber = false,
 }: ThreadCardProps) => {
+  // If user commenting first to his/her own post then
+  // display up to 1 consecutive comment on feed
+  // (Only applicable in home page where displayFirstComment === true).
+  const commentedFirstOnOwnPost: boolean =
+    displayFirstComment && comments && comments[0]?.parentId === id.toString()
+      ? true
+      : false;
+
+  // Count number of comments if comment threads exist
+  const commentsNumber: number = comments
+    ? commentedFirstOnOwnPost
+      ? comments.length - 1
+      : comments.length
+    : 0;
+
+  let uniqueAuthorsCommented = 0;
+
   return (
     <article
       className={twMerge(
         "w-full flex flex-col items-start rounded-xl",
-        isComment ? "px-0 xs:px-7" : "p-7 bg-dark-2"
+        isThreadDetailComment ? "px-0 xs:px-7" : "p-7 bg-dark-2"
       )}
     >
       {/* Thread Card */}
@@ -185,16 +213,70 @@ const ThreadCard = ({
         author={author}
         community={community}
         createdAt={createdAt}
-        isComment={isComment}
+        gapsBtwComments={
+          (isThreadDetailComment && commentsNumber > 0) ||
+          commentedFirstOnOwnPost
+        }
       />
 
-      {/* {comments && author.id === currentUserId} */}
+      {/* If user commenting first to his/her own post then display until 1 consecutive comment (only applicatble in home page).*/}
+      {comments && displayFirstComment && commentedFirstOnOwnPost && (
+        <ThreadCardContent
+          id={comments[0]._id}
+          content={comments[0].text}
+          author={comments[0].author}
+          community={null}
+          createdAt={comments[0].createdAt}
+          gapsBtwComments={displayReplyNumber && commentsNumber > 0}
+        />
+      )}
 
       {/* Reply Numbers */}
-      {displayReplyNumber && comments && comments.length > 0 && (
-        <Link href={`/thred/${id}`}>
-          <p className="mt-1 text-subtle-medium text-gray-1 hover:underline">
-            {comments.length === 0 ? "1 reply" : `${comments.length} replies`}
+      {comments && displayReplyNumber && commentsNumber > 0 && (
+        <Link href={`/thread/${id}`} className="-mt-5 flex items-center">
+          {/* Profile Icons */}
+          <div className="flex h-11 w-11 items-center justify-center">
+            {comments.map((comment: any, index: number) => {
+              // Check if the number of unique authors icon display exceeds 3
+              if (uniqueAuthorsCommented >= 3) {
+                return null;
+              }
+              // Return the first iteration since there is no previous comment yet
+              if (index === 0) {
+                uniqueAuthorsCommented++;
+                return (
+                  <Image
+                    key={index}
+                    src={comment.author.image}
+                    alt={`user_${index}`}
+                    width={20}
+                    height={20}
+                    className="rounded-full object-cover"
+                  />
+                );
+              }
+              // Check if the current comment author id is the same as the previous comment author id
+              if (comment.author.id === comments[index - 1].author.id) {
+                return null; // Skip the iteration by returning null
+              }
+              // Render the image component for unique author ids
+              uniqueAuthorsCommented++;
+              return (
+                <Image
+                  key={index}
+                  src={comment.author.image}
+                  alt={`user_${index}`}
+                  width={20}
+                  height={20}
+                  className="-ml-1 rounded-full object-cover"
+                />
+              );
+            })}
+          </div>
+
+          {/* Reply Numbers */}
+          <p className="text-subtle-medium text-gray-1 hover:underline">
+            {commentsNumber === 1 ? "1 reply" : `${commentsNumber} replies`}
           </p>
         </Link>
       )}
