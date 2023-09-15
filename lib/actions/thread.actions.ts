@@ -27,6 +27,7 @@ interface AddCommentToThreadParams {
   originalThreadId: string;
   commentedText: string;
   commentedAuthor: string;
+  commentedFromCommunity: string | null;
   path: string;
 }
 
@@ -132,7 +133,7 @@ export async function fetchThreads({
 export async function fetchThreadById(id: string) {
   try {
     return await Thread.findById(id)
-      // Get author user information
+      // Get related author user information
       .populate({
         path: "author",
         model: User,
@@ -182,6 +183,7 @@ export async function addCommentToThread({
   originalThreadId,
   commentedText,
   commentedAuthor,
+  commentedFromCommunity,
   path,
 }: AddCommentToThreadParams) {
   try {
@@ -196,12 +198,13 @@ export async function addCommentToThread({
     const commentThread = new Thread({
       text: commentedText,
       author: commentedAuthor,
+      community: commentedFromCommunity,
       parentId: originalThreadId,
     });
     // Save the new thread
     const savedCommentThread = await commentThread.save();
 
-    // Update the original thread to include the new comment threds
+    // Update the original thread to include the new comment threads
     originalThread.children.push(savedCommentThread._id);
     // Save the original thread
     await originalThread.save();

@@ -132,7 +132,19 @@ export async function fetchUserThreads(
           userThread.children.map(
             async (childThreadObjectId: Types.ObjectId) => {
               // Get Thread object via its child thread object ID
-              const childThread = await Thread.findById(childThreadObjectId);
+              const childThread = await Thread.findById(childThreadObjectId)
+                // Get related author user information
+                .populate({
+                  path: "author",
+                  model: User,
+                  select: "_id id username image",
+                })
+                // Get related community
+                .populate({
+                  path: "community",
+                  model: Community,
+                  select: "_id id name image",
+                });
               // Recursive function
               return fetchChildrenThreads(childThread);
             }

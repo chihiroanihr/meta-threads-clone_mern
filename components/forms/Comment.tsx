@@ -22,9 +22,15 @@ interface CommentProps {
   threadId: string;
   currentUserId: string;
   currentUserImg: string;
+  currentCommunityId: string | null;
 }
 
-function Comment({ threadId, currentUserId, currentUserImg }: CommentProps) {
+function Comment({
+  threadId,
+  currentUserId,
+  currentUserImg,
+  currentCommunityId,
+}: CommentProps) {
   const pathname = usePathname();
 
   /**
@@ -48,6 +54,7 @@ function Comment({ threadId, currentUserId, currentUserImg }: CommentProps) {
       originalThreadId: threadId,
       commentedText: values.thread,
       commentedAuthor: currentUserId,
+      commentedFromCommunity: currentCommunityId,
       path: pathname,
     });
 
