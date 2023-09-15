@@ -53,16 +53,17 @@ function LeftSidebar() {
       {/* Sign Out Button (only visible on large devices, will be on top-bar on small devices.) */}
       <div className="mt-10 px-6">
         <SignedIn>
-          <div className="flex w-full justify-center">
+          <div className="flex w-full items-center justify-center gap-4 p-4">
             <UserButton
               appearance={{
                 baseTheme: dark,
                 elements: {
-                  userButtonAvatarBox: "w-10 h-10",
+                  userButtonAvatarBox: "w-7 h-7",
                 },
               }}
               afterSignOutUrl="/sign-in"
             />
+            <p className="text-light-2 max-lg:hidden">Account Setting</p>
           </div>
           {/* <SignOutButton signOutCallback={() => router.push("/sign-in")}>
             <div className="flex cursor-pointer gap-4 p-4">
