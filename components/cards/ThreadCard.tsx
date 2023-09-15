@@ -17,28 +17,6 @@ interface CommentProps {
   createdAt: string;
 }
 
-interface ThreadCardProps {
-  id: string;
-  currentUserId: string;
-  parentId: string | null;
-  content: string;
-  author: {
-    id: string;
-    username: string;
-    image: string;
-  };
-  community: {
-    id: string;
-    name: string;
-    image: string;
-  } | null;
-  createdAt: string;
-  comments: CommentProps[] | null;
-  isThreadDetailComment?: boolean;
-  displayFirstComment?: boolean;
-  displayReplyNumber?: boolean;
-}
-
 interface ThreadCardContentProps {
   id: string;
   content: string;
@@ -56,6 +34,28 @@ interface ThreadCardContentProps {
   gapsBtwComments: boolean;
 }
 
+interface ThreadCardProps {
+  id: string;
+  currentUserId: string;
+  parentId: string | null;
+  content: string;
+  author: {
+    id: string;
+    username: string;
+    image: string;
+  };
+  community: {
+    id: string;
+    name: string;
+    image: string;
+  } | null;
+  createdAt: string;
+  comments: CommentProps[] | null;
+  isThreadPageComment?: boolean;
+  displayFirstComment?: boolean;
+  displayReplyNumber?: boolean;
+}
+
 const ThreadCardContent = ({
   id,
   content,
@@ -65,7 +65,7 @@ const ThreadCardContent = ({
   gapsBtwComments,
 }: ThreadCardContentProps) => {
   return (
-    <Link href={`/thread/${id}`} className="flex w-full flex-row gap-4">
+    <Link href={`/thread/${id}`} className="mb-2 flex w-full flex-row gap-2">
       {/* --------- Row --------- */}
       <div className="flex flex-col items-center">
         {/* Profile Image */}
@@ -121,7 +121,10 @@ const ThreadCardContent = ({
 
         {/* Action Content */}
         <div
-          className={twMerge("mt-5 flex gap-3.5", gapsBtwComments && "mb-7")}
+          className={twMerge(
+            "mt-5 flex gap-3.5",
+            gapsBtwComments ? "mb-5" : "mb-1"
+          )}
         >
           {/* Like Button */}
           <Image
@@ -178,7 +181,7 @@ const ThreadCard = ({
   community,
   createdAt,
   comments,
-  isThreadDetailComment = false,
+  isThreadPageComment = false,
   displayFirstComment = false,
   displayReplyNumber = false,
 }: ThreadCardProps) => {
@@ -203,7 +206,7 @@ const ThreadCard = ({
     <article
       className={twMerge(
         "w-full flex flex-col items-start rounded-xl",
-        isThreadDetailComment ? "px-0 xs:px-7" : "p-7 bg-dark-2"
+        isThreadPageComment ? "px-0 xs:px-7" : "p-7 bg-dark-2"
       )}
     >
       {/* Thread Card */}
@@ -214,7 +217,7 @@ const ThreadCard = ({
         community={community}
         createdAt={createdAt}
         gapsBtwComments={
-          (isThreadDetailComment && commentsNumber > 0) ||
+          (!isThreadPageComment && commentsNumber > 0) ||
           commentedFirstOnOwnPost
         }
       />
@@ -227,15 +230,15 @@ const ThreadCard = ({
           author={comments[0].author}
           community={null}
           createdAt={comments[0].createdAt}
-          gapsBtwComments={displayReplyNumber && commentsNumber > 0}
+          gapsBtwComments={false}
         />
       )}
 
       {/* Reply Numbers */}
       {comments && displayReplyNumber && commentsNumber > 0 && (
-        <Link href={`/thread/${id}`} className="-mt-5 flex items-center">
+        <Link href={`/thread/${id}`} className="flex items-center">
           {/* Profile Icons */}
-          <div className="flex h-11 w-11 items-center justify-center">
+          <div className="flex w-11 items-center justify-center">
             {comments.map((comment: any, index: number) => {
               // Check if the number of unique authors icon display exceeds 3
               if (uniqueAuthorsCommented >= 3) {

@@ -21,19 +21,7 @@ const ThreadsTabContent = ({
         currentUserId={currentAccountId}
         parentId={thread.parentId}
         content={thread.text}
-        author={
-          accountType === "User"
-            ? {
-                id: thread.author.id,
-                username: thread.author.username,
-                image: thread.author.image,
-              }
-            : {
-                id: thread.author.id,
-                username: thread.author.username,
-                image: thread.author.image,
-              }
-        }
+        author={thread.author}
         community={
           accountType === "User"
             ? thread.community
